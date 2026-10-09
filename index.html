@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hardening de SGBD | Presentación Ejecutiva PostgreSQL 16</title>
+  <meta name="description" content="Presentación interactiva de endurecimiento y hardening de bases de datos según estándares CIS Benchmark v1.3 y NIST SP 800-123.">
+  <!-- Google Fonts: Poppins, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Estilos separados según especificación -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient Light Overlay -->
+  <div class="ambient-glow-layer"></div>
+
+  <!-- Header / Chrome Flotante Superior -->
+  <header class="top-chrome" id="topChrome">
+    <div class="chrome-left">
+      <div class="brand-badge">
+        <span class="pulse-dot"></span>
+        <span class="badge-text">CIS BENCHMARK v1.3 // POSTGRESQL 16</span>
+      </div>
+      <span class="deck-title-mini">Informe Práctico de Hardening</span>
+    </div>
+
+    <div class="chrome-center">
+      <div class="progress-track" title="Progreso de la presentación">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="slide-counter-badge">
+        <span id="currentSlideNum">01</span><span class="counter-total"> / 08</span>
+      </div>
+    </div>
+
+    <div class="chrome-right">
+      <button class="btn-ghost" id="btnGrid" title="Ver miniaturas de diapositivas [G]">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        <span class="btn-label">Diapositivas</span>
+        <span class="key-shortcut">[G]</span>
+      </button>
+
+      <button class="btn-ghost" id="btnFullscreen" title="Alternar pantalla completa [F]">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+        <span class="btn-label">Pantalla Completa</span>
+        <span class="key-shortcut">[F]</span>
+      </button>
+
+      <div class="downloads-dropdown-container">
+        <button class="btn-primary" id="btnDownloadMenu">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>Descargar Recursos</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="dropdown-menu" id="downloadsDropdown">
+          <a href="informe_hardening_sgbd.docx" download class="dropdown-item">
+            <span class="item-icon docx-icon">DOCX</span>
+            <div class="item-text">
+              <strong>Informe Completo Word</strong>
+              <small>Documento oficial .DOC detallado</small>
+            </div>
+          </a>
+          <a href="presentacion_hardening_sgbd.pptx" download class="dropdown-item">
+            <span class="item-icon pptx-icon">PPTX</span>
+            <div class="item-text">
+              <strong>Presentación PowerPoint</strong>
+              <small>8 diapositivas formato Widescreen</small>
+            </div>
+          </a>
+          <a href="INFORME_TECNICO_HARDENING_SGBD.md" target="_blank" class="dropdown-item">
+            <span class="item-icon md-icon">MD</span>
+            <div class="item-text">
+              <strong>Informe Técnico Markdown</strong>
+              <small>Documentación técnica en texto plano</small>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenedor Maestro de Diapositivas -->
+  <main class="presentation-stage" id="presentationStage">
+
+    <!-- ===================================================================
+         SLIDE 1: PORTADA Y OBJETIVO ESTRATÉGICO
+    ==================================================================== -->
+    <section class="slide active" id="slide-1" data-index="1">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            SECTOR CRÍTICO & CIBERSEGURIDAD // CIS BENCHMARK v1.3
+          </div>
+          <h1 class="slide-title">Despliegue y Hardening de SGBD Empresarial</h1>
+          <p class="slide-subtitle">Fortificación perimetral, criptografía en tránsito y reposo, segregación RBAC y auditoría forense con PostgreSQL 16 LTS</p>
+        </div>
+
+        <div class="bento-grid grid-4-cols">
+          <!-- FILA 1 -->
+          <!-- Tarjeta 1 (Span 2 cols): Objetivo y Pilares -->
+          <div class="bento-card col-span-2 highlight-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span class="card-status-badge">Directiva Prioritaria</span>
+            </div>
+            <h3 class="card-title">Objetivo Estratégico: Defensa en Profundidad</h3>
+            <p class="card-desc">Transformar una instalación estándar ("vanilla") vulnerable en una fortaleza de datos corporativa, aplicando un blindaje concéntrico contra fugas masivas y escalamiento de privilegios.</p>
+            
+            <div class="pillar-row">
+              <div class="pillar-item">
+                <span class="pillar-title">Confidencialidad</span>
+                <span class="pillar-desc">TLS 1.3 + LUKS2 AES-256</span>
+              </div>
+              <div class="pillar-item">
+                <span class="pillar-title">Integridad</span>
+                <span class="pillar-desc">SCRAM-SHA-256 + RBAC</span>
+              </div>
+              <div class="pillar-item">
+                <span class="pillar-title">Trazabilidad</span>
+                <span class="pillar-desc">pgaudit en memoria RAM</span>
+              </div>
+            </div>
+
+            <div class="card-footer-metrics">
+              <div class="metric-item">
+                <span class="metric-value text-gradient-cyan">98.4%</span>
+                <span class="metric-label">Cumplimiento CIS Nivel 2</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-value text-emerald">0 Vulnerabilidades</span>
+                <span class="metric-label">Severidad Alta / Crítica</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 2 (Span 1 col): Postura & KPIs -->
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              <span class="badge-pill green">Auditado</span>
+            </div>
+            <h3 class="card-title">Postura de Seguridad</h3>
+            <div class="score-comparison" style="padding: 4px 0;">
+              <div class="score-box">
+                <span class="score-num" style="font-size: 20px; color: #f87171;">34.2%</span>
+                <span class="score-lbl">Vanilla</span>
+              </div>
+              <div class="score-arrow" style="font-size: 16px;">➔</div>
+              <div class="score-box">
+                <span class="score-num text-emerald" style="font-size: 20px;">98.4%</span>
+                <span class="score-lbl">Hardened</span>
+              </div>
+            </div>
+            <p class="card-desc-small"><strong>-89%</strong> en superficie de exposición de red y <strong>28/28</strong> controles CIS aprobados.</p>
+          </div>
+
+          <!-- Tarjeta 3 (Span 1 col): Stack de Producción -->
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <h3 class="card-title">Stack de Producción</h3>
+            <p class="card-desc">Instancia validada con repositorios oficiales firmados:</p>
+            <div class="tag-cloud">
+              <span class="chip">Ubuntu 24.04 LTS</span>
+              <span class="chip">Kernel Linux 6.8</span>
+              <span class="chip">PostgreSQL 16 PGDG</span>
+              <span class="chip">Systemd Hardened</span>
+            </div>
+          </div>
+
+          <!-- FILA 2 -->
+          <!-- Tarjeta 4 (Span 1 col): Estándares -->
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
+            <h3 class="card-title">Marcos Normativos</h3>
+            <ul class="bullet-list-compact" style="margin-top: 2px;">
+              <li><strong>CIS Benchmark:</strong> Nivel 1 & 2</li>
+              <li><strong>NIST SP 800-123:</strong> Servidores</li>
+              <li><strong>PCI-DSS v4.0:</strong> Req. 3, 7, 8, 10</li>
+              <li><strong>ISO 27001:2022:</strong> Controles A.8</li>
+            </ul>
+          </div>
+
+          <!-- Tarjeta 5 (Span 2 cols): Pipeline en 4 Capas -->
+          <div class="bento-card col-span-2">
+            <div class="card-top-icon">
+              <span class="card-title text-cyan">Pipeline Defensivo Concéntrico (4 Capas)</span>
+              <span class="badge-pill blue">Arquitectura Activa</span>
+            </div>
+            <div class="defense-pipeline">
+              <div class="pipeline-step">
+                <span class="pipeline-num">Capa 01</span>
+                <span class="pipeline-name">Kernel & SO</span>
+                <span class="pipeline-detail">sysctl, ASLR 2, chmod 0700 y sandbox Systemd</span>
+              </div>
+              <div class="pipeline-step">
+                <span class="pipeline-num">Capa 02</span>
+                <span class="pipeline-name">Red & TLS 1.3</span>
+                <span class="pipeline-detail">Cero texto plano, ciphers AEAD y cortafuegos pg_hba</span>
+              </div>
+              <div class="pipeline-step">
+                <span class="pipeline-num">Capa 03</span>
+                <span class="pipeline-name">Auth & RBAC</span>
+                <span class="pipeline-detail">SCRAM-SHA-256, roles mínimos y revoke public</span>
+              </div>
+              <div class="pipeline-step">
+                <span class="pipeline-num">Capa 04</span>
+                <span class="pipeline-name">Auditoría SIEM</span>
+                <span class="pipeline-detail">pgaudit inmutable, rotación 0600 y retención WORM</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 6 (Span 1 col): Estado de Auditoría -->
+          <div class="bento-card highlight-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <h3 class="card-title text-emerald">Estado de Validación</h3>
+            <p class="card-desc" style="margin-top: 2px;">Certificación post-despliegue conforme a línea base corporativa.</p>
+            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 4px;">
+              <span class="status-pill success" style="text-align: center; font-size: 11px;">PRODUCCIÓN APROBADA</span>
+              <span class="card-desc-small" style="text-align: center;">Verificado con pgtoolkit & Lynis</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 2: SUPERFICIE DE ATAQUE Y MODELO DE AMENAZAS
+    ==================================================================== -->
+    <section class="slide" id="slide-2" data-index="2">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            ANÁLISIS DE RIESGO // METODOLOGÍA STRIDE & CVSS
+          </div>
+          <h2 class="slide-title">Superficie de Ataque & Neutralización de Amenazas</h2>
+          <p class="slide-subtitle">Vectores críticos identificados en despliegues predeterminados y arquitectura de neutralización Defense-in-Depth</p>
+        </div>
+
+        <div class="bento-grid grid-4-cols">
+          <!-- FILA 1: Los 4 Vectores Críticos -->
+          <!-- Vector 1 -->
+          <div class="bento-card threat-card">
+            <div class="threat-header">
+              <span class="threat-badge red">Vector 01 // Red</span>
+              <span class="risk-pill high">Crítico</span>
+            </div>
+            <h3 class="card-title" style="font-size: 14px;">Eavesdropping & MitM</h3>
+            <p class="card-desc">Conexiones TCP en texto claro o con suites TLS obsoletas permiten interceptar consultas y contraseñas.</p>
+            <div class="mitigation-box">
+              <span class="mitigation-label">Mitigación:</span>
+              <span>TLS 1.3 forzado + Ciphers AEAD ECDHE</span>
+            </div>
+          </div>
+
+          <!-- Vector 2 -->
+          <div class="bento-card threat-card">
+            <div class="threat-header">
+              <span class="threat-badge amber">Vector 02 // Permisos</span>
+              <span class="risk-pill high">Alto</span>
+            </div>
+            <h3 class="card-title" style="font-size: 14px;">Esquema Public Laxo</h3>
+            <p class="card-desc">Privilegio CREATE predeterminado a todo usuario permite inyección de objetos y escalada de privilegios.</p>
+            <div class="mitigation-box">
+              <span class="mitigation-label">Mitigación:</span>
+              <span>REVOKE CREATE ON SCHEMA public</span>
+            </div>
+          </div>
+
+          <!-- Vector 3 -->
+          <div class="bento-card threat-card">
+            <div class="threat-header">
+              <span class="threat-badge red">Vector 03 // Identidad</span>
+              <span class="risk-pill high">Crítico</span>
+            </div>
+            <h3 class="card-title" style="font-size: 14px;">Superusuario en TCP</h3>
+            <p class="card-desc">Cuenta postgres accesible por red TCP expuesta a ataques masivos de fuerza bruta y descifrado de hash.</p>
+            <div class="mitigation-box">
+              <span class="mitigation-label">Mitigación:</span>
+              <span>Exclusivo Unix socket local peer</span>
+            </div>
+          </div>
+
+          <!-- Vector 4 -->
+          <div class="bento-card threat-card">
+            <div class="threat-header">
+              <span class="threat-badge blue">Vector 04 // Trazabilidad</span>
+              <span class="risk-pill med">Medio</span>
+            </div>
+            <h3 class="card-title" style="font-size: 14px;">Ceguera Forense</h3>
+            <p class="card-desc">Ausencia de trazas sobre sentencias DDL y manipulación de roles impide la auditoría de incidentes.</p>
+            <div class="mitigation-box">
+              <span class="mitigation-label">Mitigación:</span>
+              <span>pgaudit activo + SIEM WORM 365d</span>
+            </div>
+          </div>
+
+          <!-- FILA 2: Reducción Cuantitativa y Kill Chain -->
+          <!-- Tarjeta 5 (Span 2 cols): Matriz CVSS Cuantitativa -->
+          <div class="bento-card col-span-2">
+            <div class="card-top-icon">
+              <span class="card-title text-cyan">Matriz de Reducción Cuantitativa de Riesgo (CVSS v3.1)</span>
+              <span class="badge-pill green">-92.4% Severidad</span>
+            </div>
+            <div class="cvss-matrix">
+              <div class="cvss-row header">
+                <span>Vector de Amenaza</span>
+                <span>Pre-Hardening</span>
+                <span>Post-Hardening</span>
+                <span>Efecto</span>
+              </div>
+              <div class="cvss-row">
+                <span class="cvss-vector-name">Sniffing / MitM en Red</span>
+                <span class="cvss-badge-old">8.8 Alto</span>
+                <span class="cvss-badge-new">0.0 Nulo</span>
+                <span class="cvss-status">✓ Cifrado Forzado</span>
+              </div>
+              <div class="cvss-row">
+                <span class="cvss-vector-name">Escalada en Schema Public</span>
+                <span class="cvss-badge-old">9.1 Crítico</span>
+                <span class="cvss-badge-new">1.2 Residual</span>
+                <span class="cvss-status">✓ Privilegio Revocado</span>
+              </div>
+              <div class="cvss-row">
+                <span class="cvss-vector-name">Fuerza Bruta Root en TCP</span>
+                <span class="cvss-badge-old">9.8 Crítico</span>
+                <span class="cvss-badge-new">0.0 Nulo</span>
+                <span class="cvss-status">✓ Socket Local Exclusivo</span>
+              </div>
+              <div class="cvss-row">
+                <span class="cvss-vector-name">Evasión de Trazas / Logs</span>
+                <span class="cvss-badge-old">7.5 Alto</span>
+                <span class="cvss-badge-new">0.8 Mínimo</span>
+                <span class="cvss-status">✓ Trazabilidad pgaudit</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 6 (Span 2 cols): Kill Chain Neutralizada -->
+          <div class="bento-card col-span-2 highlight-card">
+            <div class="card-top-icon">
+              <span class="card-title text-white">Cadena de Ataque Neutralizada (Kill-Chain Response)</span>
+              <span class="badge-pill blue">Bloqueo Proactivo</span>
+            </div>
+            <div class="kill-chain-flow">
+              <div class="kc-step">
+                <div class="kc-header">
+                  <span class="kc-num">Fase 1</span>
+                  <span class="kc-shield">🛡️</span>
+                </div>
+                <span class="kc-attack">Escaneo de Red</span>
+                <span class="kc-defense">Bloqueado por CIDR restringido y SYN cookies</span>
+              </div>
+              <div class="kc-step">
+                <div class="kc-header">
+                  <span class="kc-num">Fase 2</span>
+                  <span class="kc-shield">🛡️</span>
+                </div>
+                <span class="kc-attack">Intercepción Tráfico</span>
+                <span class="kc-defense">Inutilizado por TLS 1.3 y claves efímeras PFS</span>
+              </div>
+              <div class="kc-step">
+                <div class="kc-header">
+                  <span class="kc-num">Fase 3</span>
+                  <span class="kc-shield">🛡️</span>
+                </div>
+                <span class="kc-attack">Cracking de Hashes</span>
+                <span class="kc-defense">Imposibilitado por SCRAM-SHA-256 (4096 iteraciones)</span>
+              </div>
+              <div class="kc-step">
+                <div class="kc-header">
+                  <span class="kc-num">Fase 4</span>
+                  <span class="kc-shield">🛡️</span>
+                </div>
+                <span class="kc-attack">Escalada de Privilegios</span>
+                <span class="kc-defense">Contenido por Sandbox Systemd y Revoke Public</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 3: FASE I - HARDENING DE KERNEL Y SISTEMA OPERATIVO
+    ==================================================================== -->
+    <section class="slide" id="slide-3" data-index="3">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            FASE 1 // AISLAMIENTO DE INFRAESTRUCTURA & KERNEL
+          </div>
+          <h2 class="slide-title">Hardening del Kernel Linux y Sandboxing Systemd</h2>
+          <p class="slide-subtitle">Fortificación del subsistema operativo para prevenir ataques de denegación de servicio y desbordamiento de memoria</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <!-- Columna Izquierda: Código sysctl -->
+          <div class="bento-card col-span-2 code-card">
+            <div class="code-header">
+              <div class="code-title-wrap">
+                <span class="code-dot red"></span><span class="code-dot amber"></span><span class="code-dot green"></span>
+                <span class="code-filename">/etc/sysctl.d/99-postgresql-security.conf</span>
+              </div>
+              <button class="btn-copy" data-target="code-sysctl">Copiar Config</button>
+            </div>
+            <pre class="code-block" id="code-sysctl"><code><span class="c-comment"># 1. Mitigación de ataques de Denegación de Servicio TCP SYN Flood</span>
+<span class="c-prop">net.ipv4.tcp_syncookies</span> = <span class="c-val">1</span>
+
+<span class="c-comment"># 2. Deshabilitar redirección ICMP y evitar alteración de enrutamiento</span>
+<span class="c-prop">net.ipv4.conf.all.accept_redirects</span> = <span class="c-val">0</span>
+<span class="c-prop">net.ipv4.conf.default.accept_redirects</span> = <span class="c-val">0</span>
+<span class="c-prop">net.ipv4.conf.all.send_redirects</span> = <span class="c-val">0</span>
+<span class="c-prop">net.ipv4.ip_forward</span> = <span class="c-val">0</span>
+
+<span class="c-comment"># 3. Mitigación estricta de IP Spoofing (Reverse Path Filtering)</span>
+<span class="c-prop">net.ipv4.conf.all.rp_filter</span> = <span class="c-val">1</span>
+
+<span class="c-comment"># 4. ASLR al nivel máximo (2) contra ataques de corrupción de memoria</span>
+<span class="c-prop">kernel.randomize_va_space</span> = <span class="c-val">2</span>
+
+<span class="c-comment"># 5. Restringir swappiness para evitar volcado de memoria a disco</span>
+<span class="c-prop">vm.swappiness</span> = <span class="c-val">1</span></code></pre>
+          </div>
+
+          <!-- Columna Derecha: Tarjetas de Permisos y Systemd -->
+          <div class="bento-stacked">
+            <div class="bento-card">
+              <h3 class="card-title text-cyan">Permisos en $PGDATA (CIS 2.1)</h3>
+              <p class="card-desc">Máscara octal estricta para impedir lectura por usuarios del sistema no autorizados.</p>
+              <div class="terminal-mini">
+                <code>chmod 0700 /var/lib/postgresql/data</code>
+                <code>chmod 0600 /etc/postgresql/*.conf</code>
+                <code>chown -R postgres:postgres /var/lib/postgresql</code>
+              </div>
+            </div>
+
+            <div class="bento-card highlight-card">
+              <h3 class="card-title text-blue">Sandboxing Nativo en Systemd</h3>
+              <ul class="check-list">
+                <li><code>ProtectSystem=strict</code> (Archivos en Read-Only)</li>
+                <li><code>NoNewPrivileges=true</code> (Bloqueo de binarios SUID)</li>
+                <li><code>PrivateTmp=true</code> (Espacio /tmp aislado)</li>
+                <li><code>ProtectHome=true</code> (Sin acceso a home de usuarios)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 4: FASE II - CRIPTOGRAFÍA EN TRÁNSITO (TLS 1.3)
+    ==================================================================== -->
+    <section class="slide" id="slide-4" data-index="4">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            FASE 2 // CRIPTOGRAFÍA PERIMETRAL
+          </div>
+          <h2 class="slide-title">Cifrado en Tránsito con TLS 1.3 Mandatorio</h2>
+          <p class="slide-subtitle">Erradicación absoluta del texto plano y protección contra ataques de degradación mediante suites criptográficas de última generación</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <!-- Columna 1: Directivas postgresql.conf -->
+          <div class="bento-card code-card col-span-2">
+            <div class="code-header">
+              <div class="code-title-wrap">
+                <span class="code-dot red"></span><span class="code-dot amber"></span><span class="code-dot green"></span>
+                <span class="code-filename">/etc/postgresql/16/main/postgresql.conf (Sección SSL)</span>
+              </div>
+              <button class="btn-copy" data-target="code-ssl">Copiar Directivas</button>
+            </div>
+            <pre class="code-block" id="code-ssl"><code><span class="c-comment"># Habilitación forzosa de SSL</span>
+<span class="c-prop">ssl</span> = <span class="c-val">on</span>
+<span class="c-prop">ssl_cert_file</span> = <span class="c-val">'/etc/postgresql/16/main/certs/server.crt'</span>
+<span class="c-prop">ssl_key_file</span>  = <span class="c-val">'/etc/postgresql/16/main/certs/server.key'</span>
+
+<span class="c-comment"># CIS Benchmark 4.1: Forzar versión mínima TLS 1.3</span>
+<span class="c-prop">ssl_min_protocol_version</span> = <span class="c-val">'TLSv1.3'</span>
+
+<span class="c-comment"># Ciphers de alta seguridad (Cifrado autenticado AEAD con GCM)</span>
+<span class="c-prop">ssl_ciphers</span> = <span class="c-val">'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'</span>
+<span class="c-prop">ssl_prefer_server_ciphers</span> = <span class="c-val">on</span>
+<span class="c-prop">ssl_ecdh_curve</span> = <span class="c-val">'prime256v1'</span></code></pre>
+          </div>
+
+          <!-- Columna 2: Beneficios y Certificados -->
+          <div class="bento-stacked">
+            <div class="bento-card highlight-card">
+              <h3 class="card-title text-cyan">Propiedades Criptográficas</h3>
+              <ul class="bullet-list">
+                <li><strong>Perfect Forward Secrecy (PFS):</strong> Claves efímeras por sesión garantizan que la captura de tráfico histórico no pueda ser descifrada.</li>
+                <li><strong>Certificados X.509:</strong> Claves RSA de 4096 bits o Ed25519 con permisos <code>0600</code>.</li>
+                <li><strong>Protección MitM:</strong> Verificación de integridad mutua.</li>
+              </ul>
+            </div>
+
+            <div class="bento-card">
+              <h3 class="card-title text-white">Cumplimiento Normativo</h3>
+              <div class="metric-compact">
+                <span class="badge-pill green">PCI-DSS v4.0 Requisito 3</span>
+                <span class="badge-pill blue">NIST SP 800-52 Rev 2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 5: FASE III - AUTENTICACIÓN SCRAM-SHA-256 & CORTAFUEGOS
+    ==================================================================== -->
+    <section class="slide" id="slide-5" data-index="5">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            FASE 3 // AUTENTICACIÓN & CORTAFUEGOS DE APLICACIÓN
+          </div>
+          <h2 class="slide-title">Autenticación SCRAM-SHA-256 y Cortafuegos pg_hba.conf</h2>
+          <p class="slide-subtitle">Sustitución de mecanismos obsoletos y política de Cero Confianza (Zero Trust) con denegación por defecto</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <!-- Tarjeta 1: Comparativa de Hashes -->
+          <div class="bento-card">
+            <h3 class="card-title text-cyan">SCRAM-SHA-256 vs Métodos Heredados</h3>
+            <div class="comparison-list">
+              <div class="comp-item red">
+                <span class="comp-icon">✕</span>
+                <div class="comp-text">
+                  <strong>trust / password</strong>
+                  <small>Acceso sin clave o en texto plano sin hash.</small>
+                </div>
+              </div>
+              <div class="comp-item amber">
+                <span class="comp-icon">⚠</span>
+                <div class="comp-text">
+                  <strong>md5 (Deprecado)</strong>
+                  <small>Vulnerable a colisiones y tablas rainbow.</small>
+                </div>
+              </div>
+              <div class="comp-item green highlight-border">
+                <span class="comp-icon">✓</span>
+                <div class="comp-text">
+                  <strong>scram-sha-256 (Mandatorio)</strong>
+                  <small>Salt aleatorio de 32 bytes, 4096 iteraciones. El servidor jamás almacena la clave en claro.</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 2: Configuración pg_hba.conf -->
+          <div class="bento-card code-card col-span-2">
+            <div class="code-header">
+              <div class="code-title-wrap">
+                <span class="code-dot red"></span><span class="code-dot amber"></span><span class="code-dot green"></span>
+                <span class="code-filename">/etc/postgresql/16/main/pg_hba.conf (Reglas Zero Trust)</span>
+              </div>
+              <button class="btn-copy" data-target="code-hba">Copiar Reglas</button>
+            </div>
+            <pre class="code-block" id="code-hba"><code><span class="c-comment"># TYPE  DATABASE        USER            ADDRESS                 METHOD</span>
+
+<span class="c-comment"># 1. Superusuario postgres: EXCLUSIVO local mediante UNIX socket peer</span>
+<span class="c-kw">local</span>   all             postgres                                <span class="c-val">peer</span>
+
+<span class="c-comment"># 2. Conexiones locales de herramientas de sistema con SCRAM</span>
+<span class="c-kw">local</span>   all             all                                     <span class="c-val">scram-sha-256</span>
+
+<span class="c-comment"># 3. Aplicaciones de negocio: TLS Mandatorio (hostssl) y Subred Restringida</span>
+<span class="c-kw">hostssl</span> app_production  app_backend     10.0.50.0/24            <span class="c-val">scram-sha-256</span>
+<span class="c-kw">hostssl</span> app_production  sec_auditor     10.0.99.10/32           <span class="c-val">scram-sha-256</span>
+
+<span class="c-comment"># 4. RECHAZO POR DEFECTO (Cero conexiones no declaradas)</span>
+<span class="c-kw">host</span>    all             all             0.0.0.0/0               <span class="c-val">reject</span>
+<span class="c-kw">host</span>    all             all             ::/0                    <span class="c-val">reject</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 6: FASE IV - CONTROL DE ACCESO RBAC Y SANEAMIENTO
+    ==================================================================== -->
+    <section class="slide" id="slide-6" data-index="6">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            FASE 4 // CONTROL DE ACCESO LÓGICO & PRIVILEGIOS
+          </div>
+          <h2 class="slide-title">Matriz de Roles RBAC y Saneamiento del Esquema Public</h2>
+          <p class="slide-subtitle">Aplicación estricta del Principio de Menor Privilegio y aislamiento de dominios transaccionales</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <!-- Bento 1: Saneamiento Public -->
+          <div class="bento-card highlight-card">
+            <div class="card-top-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+            </div>
+            <h3 class="card-title text-cyan">Saneamiento Inmediato (CIS 5.1)</h3>
+            <p class="card-desc">Eliminación de la brecha histórica del esquema público:</p>
+            <div class="sql-box">
+              <code>REVOKE CREATE ON SCHEMA public FROM PUBLIC;</code>
+              <code>REVOKE ALL ON DATABASE app_prod FROM PUBLIC;</code>
+              <code>REVOKE EXECUTE ON FUNCTION pg_read_file(text) FROM PUBLIC;</code>
+            </div>
+          </div>
+
+          <!-- Bento 2: Script SQL de Roles -->
+          <div class="bento-card code-card col-span-2">
+            <div class="code-header">
+              <div class="code-title-wrap">
+                <span class="code-dot red"></span><span class="code-dot amber"></span><span class="code-dot green"></span>
+                <span class="code-filename">rbac_security_model.sql</span>
+              </div>
+              <button class="btn-copy" data-target="code-rbac">Copiar SQL</button>
+            </div>
+            <pre class="code-block" id="code-rbac"><code><span class="c-comment">-- 1. Roles grupales sin acceso de login directo (NOLOGIN)</span>
+<span class="c-kw">CREATE ROLE</span> role_readonly <span class="c-kw">WITH NOLOGIN</span>;
+<span class="c-kw">CREATE ROLE</span> role_readwrite <span class="c-kw">WITH NOLOGIN</span>;
+<span class="c-kw">CREATE ROLE</span> role_auditor <span class="c-kw">WITH NOLOGIN</span>;
+
+<span class="c-comment">-- 2. Concesión de privilegios mínimos en el esquema de aplicación</span>
+<span class="c-kw">GRANT USAGE ON SCHEMA</span> app_data <span class="c-kw">TO</span> role_readwrite;
+<span class="c-kw">GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA</span> app_data <span class="c-kw">TO</span> role_readwrite;
+
+<span class="c-comment">-- 3. Rol de sólo lectura para reportes y Business Intelligence</span>
+<span class="c-kw">GRANT USAGE ON SCHEMA</span> app_data <span class="c-kw">TO</span> role_readonly;
+<span class="c-kw">GRANT SELECT ON ALL TABLES IN SCHEMA</span> app_data <span class="c-kw">TO</span> role_readonly;
+
+<span class="c-comment">-- 4. Rol auditor: acceso exclusivo a métricas y configuraciones del motor</span>
+<span class="c-kw">GRANT</span> pg_read_all_settings, pg_read_all_stats <span class="c-kw">TO</span> role_auditor;</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 7: FASE V - AUDITORÍA FORENSE PGAUDIT Y LOGS
+    ==================================================================== -->
+    <section class="slide" id="slide-7" data-index="7">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            FASE 5 // TRAZABILIDAD & MONITOREO CONTINUO
+          </div>
+          <h2 class="slide-title">Auditoría Forense con pgaudit y Logging Inmutable</h2>
+          <p class="slide-subtitle">Captura estructurada de eventos DDL, modificaciones de roles y centralización segura hacia plataforma SIEM</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <!-- Columna 1: Directivas de Auditoría -->
+          <div class="bento-card code-card col-span-2">
+            <div class="code-header">
+              <div class="code-title-wrap">
+                <span class="code-dot red"></span><span class="code-dot amber"></span><span class="code-dot green"></span>
+                <span class="code-filename">pgaudit & postgresql.conf (Trazabilidad Forense)</span>
+              </div>
+              <button class="btn-copy" data-target="code-audit">Copiar Config</button>
+            </div>
+            <pre class="code-block" id="code-audit"><code><span class="c-comment"># Precarga de extensión de auditoría certificada</span>
+<span class="c-prop">shared_preload_libraries</span> = <span class="c-val">'pgaudit'</span>
+
+<span class="c-comment"># Clases de eventos auditados: DDL, Roles, Escrituras críticas y Misceláneos</span>
+<span class="c-prop">pgaudit.log</span> = <span class="c-val">'ddl, role, write, misc'</span>
+<span class="c-prop">pgaudit.log_catalog</span> = <span class="c-val">off</span>
+<span class="c-prop">pgaudit.log_parameter</span> = <span class="c-val">on</span>   <span class="c-comment"># Captura parámetros de sentencias preparadas</span>
+
+<span class="c-comment"># Parámetros del subsistema de logs del motor</span>
+<span class="c-prop">logging_collector</span> = <span class="c-val">on</span>
+<span class="c-prop">log_directory</span> = <span class="c-val">'/var/log/postgresql'</span>
+<span class="c-prop">log_file_mode</span> = <span class="c-val">0600</span>         <span class="c-comment"># Permisos exclusivos del usuario de base de datos</span>
+<span class="c-prop">log_rotation_age</span> = <span class="c-val">1d</span>
+<span class="c-prop">log_rotation_size</span> = <span class="c-val">100MB</span>
+<span class="c-prop">log_connections</span> = <span class="c-val">on</span>
+<span class="c-prop">log_disconnections</span> = <span class="c-val">on</span>
+<span class="c-prop">log_min_duration_statement</span> = <span class="c-val">250</span>  <span class="c-comment"># Alerta en queries lentas > 250ms</span></code></pre>
+          </div>
+
+          <!-- Columna 2: SIEM & Cadena de Custodia -->
+          <div class="bento-stacked">
+            <div class="bento-card highlight-card">
+              <h3 class="card-title text-cyan">Integración SIEM (Wazuh / Elastic)</h3>
+              <p class="card-desc">Sincronización de trazas en tiempo real mediante túnel TLS protegido con retención inmutable de 365 días.</p>
+              <div class="tag-cloud">
+                <span class="chip">PCI-DSS Req 10</span>
+                <span class="chip">WORM Storage</span>
+                <span class="chip">Cadena de Custodia</span>
+              </div>
+            </div>
+
+            <div class="bento-card">
+              <h3 class="card-title text-white">Prefijo Estructurado de Logs</h3>
+              <code class="mono-badge">%m [%p] %q%u@%d app=%a</code>
+              <p class="card-desc-small">Registra fecha milisegundos, PID del backend, usuario, base de datos y nombre de la aplicación cliente.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 8: RESULTADOS, MATRIZ CIS Y CONCLUSIONES
+    ==================================================================== -->
+    <section class="slide" id="slide-8" data-index="8">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            EVALUACIÓN CUANTITATIVA // BALANCE FINAL
+          </div>
+          <h2 class="slide-title">Resultados de Auditoría CIS Benchmark y Conclusiones</h2>
+          <p class="slide-subtitle">Comparativa del estado inicial frente a la postura fortificada final y recomendaciones DevSecOps</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <!-- Columna 1 y 2: Tabla Comparativa CIS -->
+          <div class="bento-card col-span-2">
+            <h3 class="card-title text-cyan">Matriz de Cumplimiento de Controles CIS v1.3.0</h3>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Dominio de Seguridad CIS</th>
+                    <th>Estado Vanilla Pre-Hardening</th>
+                    <th>Estado Post-Hardening</th>
+                    <th>Resultado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>CIS 1.x</strong> Aprovisionamiento Seguro</td>
+                    <td>Repositorios genéricos sin fijar</td>
+                    <td>Repositorio PGDG firmado GPG</td>
+                    <td><span class="status-pill success">100% OK</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>CIS 2.x</strong> SO, Permisos y Sandboxing</td>
+                    <td>Permisos 0755 en datos, sin sandbox</td>
+                    <td>Permisos 0700 + Systemd Isolated</td>
+                    <td><span class="status-pill success">100% OK</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>CIS 3.x</strong> Autenticación y Red</td>
+                    <td>MD5 permitido, escucha 0.0.0.0/0</td>
+                    <td>SCRAM-SHA-256 + CIDR segmentado</td>
+                    <td><span class="status-pill success">100% OK</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>CIS 4.x</strong> Criptografía en Tránsito</td>
+                    <td>Texto claro permitido sin SSL</td>
+                    <td>TLS 1.3 forzado + Ciphers ECDHE</td>
+                    <td><span class="status-pill success">100% OK</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>CIS 5.x</strong> Gestión de Roles y Objetos</td>
+                    <td>Esquema PUBLIC con CREATE</td>
+                    <td>Revocado, matriz RBAC mínima</td>
+                    <td><span class="status-pill success">100% OK</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>CIS 6.x</strong> Auditoría y Trazabilidad</td>
+                    <td>Sin auditoría DDL ni rotación 0600</td>
+                    <td>pgaudit activo + SIEM WORM</td>
+                    <td><span class="status-pill success">98% OK</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Columna 3: KPIs y Conclusiones -->
+          <div class="bento-stacked">
+            <div class="bento-card highlight-card">
+              <h3 class="card-title text-cyan">Score de Cumplimiento</h3>
+              <div class="score-comparison">
+                <div class="score-box before">
+                  <span class="score-num">34.2%</span>
+                  <span class="score-lbl">Antes (Vanilla)</span>
+                </div>
+                <div class="score-arrow">➔</div>
+                <div class="score-box after">
+                  <span class="score-num text-emerald">98.4%</span>
+                  <span class="score-lbl">Post-Hardening</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bento-card">
+              <h3 class="card-title text-white">Recomendaciones DevSecOps</h3>
+              <ul class="bullet-list-compact">
+                <li>Integrar escaneo <code>pgtoolkit</code> en CI/CD.</li>
+                <li>Automatizar rotación de certificados TLS (90 días).</li>
+                <li>Simulacro semestral de restauración inmutable.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Barra de Navegación Flotante Inferior -->
+  <footer class="bottom-floating-nav" id="bottomNav">
+    <div class="nav-controls-left">
+      <button class="nav-btn" id="btnPrev" title="Diapositiva anterior [←] o [K]">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>Anterior</span>
+        <span class="key-hint">[←]</span>
+      </button>
+
+      <div class="slide-dots-container" id="slideDotsContainer">
+        <!-- Generados dinámicamente por app.js -->
+      </div>
+
+      <button class="nav-btn primary" id="btnNext" title="Siguiente diapositiva [→], [Space] o [N]">
+        <span>Siguiente</span>
+        <span class="key-hint">[→]</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+
+    <div class="nav-controls-right">
+      <span class="nav-info-text">Navegación con teclas: <kbd>←</kbd> <kbd>→</kbd> <kbd>F</kbd> <kbd>G</kbd></span>
+    </div>
+  </footer>
+
+  <!-- Drawer / Modal de Miniaturas de Diapositivas (Grid View) -->
+  <aside class="slide-grid-drawer" id="slideGridDrawer">
+    <div class="drawer-header">
+      <div class="drawer-title-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        <h3>Índice de Diapositivas</h3>
+      </div>
+      <button class="btn-close-drawer" id="btnCloseDrawer" title="Cerrar [Esc]">✕</button>
+    </div>
+    <div class="drawer-grid" id="drawerThumbnails">
+      <!-- Miniaturas generadas por app.js -->
+    </div>
+  </aside>
+
+  <!-- Toast de notificación de copiado -->
+  <div class="toast-notification" id="toastNotification">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span id="toastMessage">Comando copiado al portapapeles</span>
+  </div>
+
+  <!-- Script separado según especificación -->
+  <script src="app.js"></script>
+</body>
+</html>
