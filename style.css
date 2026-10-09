@@ -342,7 +342,7 @@ body::before {
   font-size: 11px;
 }
 
-/* --- Escenario Principal de Diapositivas --- */
+/* --- Escenario Principal de Diapositivas con Perspectiva 3D --- */
 .presentation-stage {
   position: fixed;
   top: 64px;
@@ -353,30 +353,388 @@ body::before {
   z-index: 10;
   display: block;
   padding: 0;
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+  transform-style: preserve-3d;
 }
 
-/* --- Slide Container con Desplazamiento Fluido Hacia Abajo --- */
+/* --- Slide Container con Soporte de Animaciones de Entrada y Salida --- */
 .slide {
   position: absolute;
   inset: 0;
   padding: 16px 32px 32px 32px;
   opacity: 0;
   visibility: hidden;
-  transform: scale(0.985) translateY(10px);
-  transition: opacity 0.35s var(--transition-smooth), transform 0.35s var(--transition-smooth), visibility 0.35s;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   pointer-events: none;
+  z-index: 10;
+  transform-origin: 50% 45%;
+  backface-visibility: hidden;
+  will-change: transform, opacity, filter;
+  transition: visibility 0.48s;
 }
 
+/* Diapositiva Activa Estable (En Pantalla) */
 .slide.active {
   opacity: 1;
   visibility: visible;
-  transform: scale(1) translateY(0);
+  transform: translate3d(0, 0, 0) scale(1) rotateY(0deg);
   pointer-events: all;
   z-index: 20;
+}
+
+/* ==========================================================================
+   ANIMACIONES DIRECCIONALES DE ENTRADA Y SALIDA (TRANSICIONES CINEMÁTICAS)
+   ========================================================================== */
+
+/* Salida hacia adelante (Next / Siguiente): se retira a la izquierda con profundidad */
+.slide.is-exiting.exit-next {
+  z-index: 15 !important;
+  visibility: visible !important;
+  pointer-events: none !important;
+  animation: slideExitNext 0.46s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Entrada desde adelante (Next / Siguiente): llega desde la derecha con resplandor */
+.slide.is-entering.enter-next {
+  z-index: 25 !important;
+  visibility: visible !important;
+  pointer-events: all !important;
+  animation: slideEnterNext 0.48s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Salida hacia atrás (Prev / Anterior): se retira a la derecha con profundidad */
+.slide.is-exiting.exit-prev {
+  z-index: 15 !important;
+  visibility: visible !important;
+  pointer-events: none !important;
+  animation: slideExitPrev 0.46s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Entrada desde atrás (Prev / Anterior): llega desde la izquierda con resplandor */
+.slide.is-entering.enter-prev {
+  z-index: 25 !important;
+  visibility: visible !important;
+  pointer-events: all !important;
+  animation: slideEnterPrev 0.48s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes slideExitNext {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1) rotateY(0deg);
+    filter: blur(0px) brightness(1);
+  }
+  40% {
+    opacity: 0.8;
+    filter: blur(2px) brightness(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-90px, 0, -80px) scale(0.92) rotateY(3deg);
+    filter: blur(6px) brightness(0.6);
+  }
+}
+
+@keyframes slideEnterNext {
+  0% {
+    opacity: 0;
+    transform: translate3d(100px, 0, 80px) scale(0.92) rotateY(-3deg);
+    filter: blur(8px) brightness(1.3);
+  }
+  60% {
+    filter: blur(2px) brightness(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1) rotateY(0deg);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+@keyframes slideExitPrev {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1) rotateY(0deg);
+    filter: blur(0px) brightness(1);
+  }
+  40% {
+    opacity: 0.8;
+    filter: blur(2px) brightness(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(90px, 0, -80px) scale(0.92) rotateY(-3deg);
+    filter: blur(6px) brightness(0.6);
+  }
+}
+
+@keyframes slideEnterPrev {
+  0% {
+    opacity: 0;
+    transform: translate3d(-100px, 0, 80px) scale(0.92) rotateY(3deg);
+    filter: blur(8px) brightness(1.3);
+  }
+  60% {
+    filter: blur(2px) brightness(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1) rotateY(0deg);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+/* ==========================================================================
+   EFECTOS ORIGINALES TEMÁTICOS POR DIAPOSITIVA (SIGNATURE FX)
+   ========================================================================== */
+
+/* SLIDE 1: Hero Cyber-Nexus (Apertura de Pulso Holográfico) */
+.slide[data-theme="hero-nexus"].active.is-entering::before {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.5) 0%, rgba(37, 99, 235, 0.25) 45%, transparent 70%);
+  animation: heroNexusPulse 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes heroNexusPulse {
+  0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0; }
+  50% { opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(4.8); opacity: 0; }
+}
+
+/* SLIDE 2: Radar Threat Scanline Sweep (Barrido Táctico Láser de Amenazas) */
+.slide[data-theme="threat-radar"].active.is-entering::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -120px;
+  width: 140px;
+  background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.3) 40%, rgba(245, 158, 11, 0.55) 75%, rgba(56, 189, 248, 0.8) 100%);
+  box-shadow: 0 0 35px rgba(245, 158, 11, 0.45);
+  animation: radarLaserSweep 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+  z-index: 30;
+}
+@keyframes radarLaserSweep {
+  0% { left: -140px; opacity: 0; }
+  25% { opacity: 0.9; }
+  100% { left: 110%; opacity: 0; }
+}
+
+/* SLIDE 3: Kernel Sandbox Core Isolation (Ensamblaje Modular Seguro) */
+.slide[data-theme="kernel-sandbox"].active.is-entering .slide-inner {
+  animation: kernelAssemble 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes kernelAssemble {
+  0% { transform: scale(0.96) translateY(24px); filter: contrast(1.25) brightness(1.2); }
+  100% { transform: scale(1) translateY(0); filter: contrast(1) brightness(1); }
+}
+
+/* SLIDE 4: Cipher Stream & Prism Sheen (Destello Criptográfico Prismático) */
+.slide[data-theme="cipher-stream"].active.is-entering::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(56, 189, 248, 0.16) 42%, rgba(147, 197, 253, 0.35) 48%, transparent 58%);
+  animation: prismSheenWave 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+  z-index: 25;
+}
+@keyframes prismSheenWave {
+  0% { transform: translateX(-100%); opacity: 0; }
+  35% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+/* SLIDE 5: Perimeter Firewall Gate Latch (Cierre Perimetral Zero Trust) */
+.slide[data-theme="firewall-barrier"].active.is-entering .bento-grid {
+  animation: firewallGateLatch 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes firewallGateLatch {
+  0% { transform: scaleX(0.95); filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.7)); }
+  100% { transform: scaleX(1); filter: drop-shadow(0 0 0 transparent); }
+}
+
+/* SLIDE 6: RBAC Vault Tumbler Unlatch (Desbloqueo de Bóveda Jerárquica) */
+.slide[data-theme="vault-rbac"].active.is-entering .bento-card {
+  animation: vaultCardDrop 0.5s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+@keyframes vaultCardDrop {
+  0% { opacity: 0; transform: translateY(-24px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* SLIDE 7: Forensic Telemetry Stream (Escaneo Vertical Forense) */
+.slide[data-theme="forensic-telemetry"].active.is-entering::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -40px;
+  height: 6px;
+  background: linear-gradient(90deg, transparent, #38bdf8 30%, #ffffff 50%, #3b82f6 70%, transparent);
+  box-shadow: 0 0 24px #38bdf8, 0 0 45px rgba(59, 130, 246, 0.8);
+  animation: forensicScanBar 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+  z-index: 35;
+}
+@keyframes forensicScanBar {
+  0% { top: 0%; opacity: 0; }
+  25% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* SLIDE 8: Executive Benchmark Triumph (Aura Triunfal de Victoria CIS) */
+.slide[data-theme="executive-triumph"].active.is-entering::before {
+  content: '';
+  position: absolute;
+  top: 35%;
+  right: 25%;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, rgba(56, 189, 248, 0.25) 50%, transparent 70%);
+  animation: triumphAuraPulse 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes triumphAuraPulse {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { opacity: 0.95; }
+  100% { transform: scale(3.6); opacity: 0; }
+}
+
+/* ==========================================================================
+   MICRO-ANIMACIONES EN CASCADA PARA ELEMENTOS INTERNOS (STAGGERED REVEAL)
+   ========================================================================== */
+
+/* Entrada y Salida Suave del Encabezado */
+.slide.active .slide-header {
+  animation: headerCascadeIn 0.46s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.slide.is-exiting .slide-header {
+  animation: headerCascadeOut 0.32s cubic-bezier(0.4, 0, 1, 1) both;
+}
+@keyframes headerCascadeIn {
+  0% { opacity: 0; transform: translateY(-16px); filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes headerCascadeOut {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-12px); filter: blur(3px); }
+}
+
+/* Entrada Progresiva Escalonada de Tarjetas Bento */
+.slide.active .bento-grid > .bento-card {
+  animation: bentoCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.slide.active .bento-grid > .bento-card:nth-child(1) { animation-delay: 0.04s; }
+.slide.active .bento-grid > .bento-card:nth-child(2) { animation-delay: 0.09s; }
+.slide.active .bento-grid > .bento-card:nth-child(3) { animation-delay: 0.14s; }
+.slide.active .bento-grid > .bento-card:nth-child(4) { animation-delay: 0.19s; }
+.slide.active .bento-grid > .bento-card:nth-child(5) { animation-delay: 0.24s; }
+.slide.active .bento-grid > .bento-card:nth-child(6) { animation-delay: 0.29s; }
+
+.slide.active .bento-stacked > .bento-card {
+  animation: bentoCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.slide.active .bento-stacked > .bento-card:nth-child(1) { animation-delay: 0.12s; }
+.slide.active .bento-stacked > .bento-card:nth-child(2) { animation-delay: 0.18s; }
+.slide.active .bento-stacked > .bento-card:nth-child(3) { animation-delay: 0.24s; }
+
+/* Salida Sincronizada de Tarjetas Bento */
+.slide.is-exiting .bento-card {
+  animation: bentoCardOut 0.32s cubic-bezier(0.4, 0, 1, 1) both;
+}
+@keyframes bentoCardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.97);
+    filter: blur(4px);
+  }
+  70% {
+    transform: translateY(-2px) scale(1.004);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+@keyframes bentoCardOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.96);
+    filter: blur(4px);
+  }
+}
+
+/* Destello de Borde Superior al Cargar la Tarjeta (Luminous Gleam) */
+.slide.active .bento-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue-cyan), #ffffff, var(--blue-brand), transparent);
+  animation: cardBorderGleam 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+  opacity: 0.85;
+}
+@keyframes cardBorderGleam {
+  0% { left: -60%; opacity: 0; }
+  30% { opacity: 1; }
+  100% { left: 120%; opacity: 0; }
+}
+
+/* Estilo del Botón de Reproducción de Animación en Chrome */
+#btnReplay {
+  border-color: rgba(56, 189, 248, 0.35);
+  color: var(--blue-cyan);
+  background: rgba(56, 189, 248, 0.08);
+}
+#btnReplay:hover {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: var(--blue-cyan);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+}
+#btnReplay.is-spinning svg {
+  animation: replaySpin 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes replaySpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Soporte de Accesibilidad (Prefers Reduced Motion) */
+@media (prefers-reduced-motion: reduce) {
+  .slide, .slide.active, .slide.is-entering, .slide.is-exiting,
+  .slide.active .bento-card, .slide.is-exiting .bento-card,
+  .slide.active .slide-header, .slide.is-exiting .slide-header {
+    animation: none !important;
+    transition: opacity 0.2s ease !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }
 
 /* Scrollbar Personalizada Obsidian & Electric Sapphire */
@@ -1562,5 +1920,438 @@ body.is-fullscreen .slide-inner {
   .card-desc {
     font-size: 11.5px;
   }
+}
+
+/* ==========================================================================
+   MODO CLARO (CONTRAPUNTO DE ALTO CONTRASTE - DISEÑO.MD SECCIÓN 2 & 4)
+   ========================================================================== */
+body.light-mode {
+  --bg-base: #f8fafc;
+  --surface-card: #ffffff;
+  --surface-glass: rgba(255, 255, 255, 0.88);
+  --surface-glass-hover: rgba(37, 99, 235, 0.06);
+  --surface-nav: rgba(255, 255, 255, 0.94);
+
+  --blue-brand: #2563eb;
+  --blue-cyan: #0284c7;
+  --blue-400: #3b82f6;
+  --blue-sapphire: #1d4ed8;
+  --blue-deep: #1e40af;
+  --blue-surface-soft: rgba(37, 99, 235, 0.08);
+  --blue-surface-active: rgba(37, 99, 235, 0.12);
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-blue: rgba(37, 99, 235, 0.25);
+  --border-blue-active: rgba(37, 99, 235, 0.6);
+  --glow-primary: rgba(37, 99, 235, 0.18);
+  --glow-intense: rgba(37, 99, 235, 0.35);
+
+  --text-main: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border-element: rgba(15, 23, 42, 0.08);
+
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Textura ambiental en Modo Claro */
+body.light-mode::before {
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.08) 0%, transparent 65%),
+    radial-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(to right, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 120px 120px;
+}
+
+body.light-mode .ambient-glow-layer {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%);
+  filter: blur(80px);
+  opacity: 0.6;
+}
+
+/* Chrome Superior e Inferior en Modo Claro */
+body.light-mode .top-chrome,
+body.light-mode .bottom-floating-nav {
+  background: var(--surface-nav);
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+}
+
+body.light-mode .brand-badge {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.25);
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.08);
+}
+
+body.light-mode .badge-text {
+  color: #1d4ed8;
+}
+
+body.light-mode .deck-title-mini {
+  color: #475569;
+  border-left-color: rgba(15, 23, 42, 0.1);
+}
+
+body.light-mode .progress-track {
+  background: rgba(15, 23, 42, 0.07);
+}
+
+body.light-mode .slide-counter-badge {
+  background: #f1f5f9;
+  border-color: rgba(15, 23, 42, 0.08);
+  color: #0f172a;
+}
+
+body.light-mode .counter-total {
+  color: #64748b;
+}
+
+body.light-mode .btn-ghost {
+  color: #475569;
+  border-color: rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+body.light-mode .btn-ghost:hover {
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+  border-color: #3b82f6;
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.15);
+}
+
+body.light-mode #btnReplay,
+body.light-mode #btnThemeToggle {
+  background: rgba(37, 99, 235, 0.06);
+  border-color: rgba(37, 99, 235, 0.25);
+  color: #1d4ed8;
+}
+
+body.light-mode #btnReplay:hover,
+body.light-mode #btnThemeToggle:hover {
+  background: rgba(37, 99, 235, 0.12);
+  border-color: #2563eb;
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.2);
+}
+
+body.light-mode .key-shortcut,
+body.light-mode .key-hint,
+body.light-mode .nav-info-text kbd {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+/* Tipografía y Encabezados en Modo Claro */
+body.light-mode .slide-title {
+  background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.light-mode .slide-subtitle {
+  color: #475569;
+}
+
+body.light-mode .pill-tag {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.22);
+  color: #1d4ed8;
+}
+
+body.light-mode .text-white {
+  color: #0f172a !important;
+}
+
+body.light-mode .text-gradient-cyan {
+  background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.light-mode .text-cyan { color: #0284c7; }
+body.light-mode .text-blue { color: #2563eb; }
+
+/* Bento Cards en Modo Claro */
+body.light-mode .bento-card {
+  background: #ffffff;
+  background-image: none;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+
+body.light-mode .bento-card:hover {
+  border-color: rgba(37, 99, 235, 0.35);
+  box-shadow: 0 14px 32px rgba(37, 99, 235, 0.1), 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+body.light-mode .highlight-card {
+  background: linear-gradient(180deg, #f0f7ff 0%, #ffffff 100%);
+  border-color: rgba(37, 99, 235, 0.28);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.09);
+}
+
+body.light-mode .card-title {
+  color: #0f172a;
+}
+
+body.light-mode .card-desc {
+  color: #475569;
+}
+
+body.light-mode .card-desc-small {
+  color: #64748b;
+}
+
+body.light-mode .card-status-badge {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.25);
+  color: #1d4ed8;
+}
+
+body.light-mode .card-footer-metrics {
+  border-top-color: rgba(15, 23, 42, 0.06);
+}
+
+body.light-mode .metric-label {
+  color: #64748b;
+}
+
+/* Componentes Especiales de Diapositiva en Modo Claro */
+body.light-mode .pillar-item {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+body.light-mode .pillar-item:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+body.light-mode .pillar-title {
+  color: #1d4ed8;
+}
+body.light-mode .pillar-desc {
+  color: #475569;
+}
+
+body.light-mode .pipeline-step {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+body.light-mode .pipeline-step:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+body.light-mode .pipeline-name {
+  color: #0f172a;
+}
+body.light-mode .pipeline-detail {
+  color: #64748b;
+}
+body.light-mode .pipeline-num {
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+}
+
+body.light-mode .cvss-row {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+body.light-mode .cvss-row.header {
+  background: #f1f5f9;
+  border-color: rgba(37, 99, 235, 0.2);
+  color: #1d4ed8;
+}
+body.light-mode .cvss-vector-name {
+  color: #0f172a;
+}
+body.light-mode .cvss-status {
+  color: #047857;
+}
+
+body.light-mode .kc-step {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+body.light-mode .kc-attack {
+  color: #0f172a;
+}
+body.light-mode .kc-defense {
+  color: #047857;
+}
+
+body.light-mode .score-box {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+body.light-mode .score-lbl {
+  color: #64748b;
+}
+
+body.light-mode .chip {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #334155;
+}
+
+body.light-mode .bullet-list li,
+body.light-mode .bullet-list-compact li,
+body.light-mode .check-list li {
+  color: #475569;
+}
+
+body.light-mode .mitigation-box {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #065f46;
+}
+body.light-mode .mitigation-label {
+  color: #059669;
+}
+
+body.light-mode .comp-item {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+body.light-mode .comp-text strong {
+  color: #0f172a;
+}
+body.light-mode .comp-text small {
+  color: #475569;
+}
+
+/* Código y Terminales en Modo Claro */
+body.light-mode .code-card {
+  background: #0f172a;
+  border-color: rgba(15, 23, 42, 0.15);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+}
+body.light-mode .code-header {
+  background: #1e293b;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+body.light-mode .terminal-mini,
+body.light-mode .sql-box {
+  background: #0f172a;
+  border-color: #1e293b;
+  color: #38bdf8;
+}
+
+/* Tablas de Datos en Modo Claro */
+body.light-mode .data-table th {
+  background: #f1f5f9;
+  color: #1d4ed8;
+  border-bottom: 2px solid #2563eb;
+}
+body.light-mode .data-table td {
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+}
+body.light-mode .data-table tbody tr:nth-child(even) td {
+  background: #f8fafc;
+}
+body.light-mode .data-table tbody tr:hover td {
+  background: #eff6ff;
+}
+body.light-mode .data-table tbody tr:hover td:first-child {
+  border-left: 3px solid #2563eb;
+  color: #0f172a;
+}
+
+/* Drawer de Diapositivas en Modo Claro */
+body.light-mode .slide-grid-drawer {
+  background: rgba(255, 255, 255, 0.98);
+  border-left-color: rgba(15, 23, 42, 0.08);
+  box-shadow: -10px 0 40px rgba(15, 23, 42, 0.12);
+}
+body.light-mode .drawer-header {
+  border-bottom-color: rgba(15, 23, 42, 0.08);
+}
+body.light-mode .drawer-title-wrap h3 {
+  color: #0f172a;
+}
+body.light-mode .btn-close-drawer {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #475569;
+}
+body.light-mode .btn-close-drawer:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+body.light-mode .drawer-card-thumb {
+  background: #f8fafc;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+body.light-mode .drawer-card-thumb:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+body.light-mode .drawer-card-thumb.active {
+  background: #eff6ff;
+  border-color: #2563eb;
+  box-shadow: 0 0 16px rgba(37, 99, 235, 0.15);
+}
+body.light-mode .thumb-num {
+  color: #2563eb;
+}
+body.light-mode .thumb-title {
+  color: #0f172a;
+}
+body.light-mode .thumb-subtitle {
+  color: #64748b;
+}
+
+/* Dropdown Descargas en Modo Claro */
+body.light-mode .dropdown-menu {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+}
+body.light-mode .dropdown-item {
+  color: #0f172a;
+}
+body.light-mode .dropdown-item:hover {
+  background: rgba(37, 99, 235, 0.06);
+}
+body.light-mode .item-text strong {
+  color: #0f172a;
+}
+body.light-mode .item-text small {
+  color: #64748b;
+}
+
+/* Barra de Navegación Inferior en Modo Claro */
+body.light-mode .nav-btn {
+  background: #f1f5f9;
+  border-color: rgba(15, 23, 42, 0.08);
+  color: #475569;
+}
+body.light-mode .nav-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+body.light-mode .slide-dot {
+  background: rgba(15, 23, 42, 0.18);
+}
+body.light-mode .slide-dot:hover {
+  background: rgba(37, 99, 235, 0.5);
+}
+body.light-mode .slide-dot.active {
+  background: linear-gradient(90deg, #38bdf8, #2563eb);
+}
+body.light-mode .nav-info-text {
+  color: #64748b;
+}
+
+/* Scrollbar en Modo Claro */
+body.light-mode .slide::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.04);
+}
+body.light-mode .slide::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #93c5fd, #3b82f6);
+  border: 2px solid #f8fafc;
 }
 

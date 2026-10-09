@@ -8,17 +8,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const state = {
     currentSlide: 1,
     totalSlides: 8,
+    theme: 'light',
     isDrawerOpen: false,
     isFullscreen: false,
+    isTransitioning: false,
     slideTitles: [
-      { num: '01', title: 'Objetivos y Alcance Estratégico', sub: 'Defensa en Profundidad & CIS Benchmark' },
-      { num: '02', title: 'Superficie de Ataque & STRIDE', sub: 'Identificación de 4 vectores críticos' },
-      { num: '03', title: 'Fase I: Kernel & SO Hardening', sub: 'sysctl.conf, permisos 0700 y Systemd' },
-      { num: '04', title: 'Fase II: Criptografía en Tránsito', sub: 'TLS 1.3 forzado y ciphers ECDHE' },
-      { num: '05', title: 'Fase III: Autenticación & Red', sub: 'SCRAM-SHA-256 y firewall pg_hba.conf' },
-      { num: '06', title: 'Fase IV: Control de Acceso RBAC', sub: 'Revocación de public y roles mínimos' },
-      { num: '07', title: 'Fase V: Auditoría Forense pgaudit', sub: 'Trazabilidad DDL/Roles y envío SIEM' },
-      { num: '08', title: 'Resultados CIS y Conclusiones', sub: 'Cumplimiento 98.4% y DevSecOps' }
+      { num: '01', title: 'Objetivos y Alcance Estratégico', sub: 'Defensa en Profundidad & CIS Benchmark', fx: 'Cyber Nexus' },
+      { num: '02', title: 'Superficie de Ataque & STRIDE', sub: 'Identificación de 4 vectores críticos', fx: 'Threat Radar' },
+      { num: '03', title: 'Fase I: Kernel & SO Hardening', sub: 'sysctl.conf, permisos 0700 y Systemd', fx: 'Kernel Sandbox' },
+      { num: '04', title: 'Fase II: Criptografía en Tránsito', sub: 'TLS 1.3 forzado y ciphers ECDHE', fx: 'Cipher Stream' },
+      { num: '05', title: 'Fase III: Autenticación & Red', sub: 'SCRAM-SHA-256 y firewall pg_hba.conf', fx: 'Firewall Gate' },
+      { num: '06', title: 'Fase IV: Control de Acceso RBAC', sub: 'Revocación de public y roles mínimos', fx: 'RBAC Vault' },
+      { num: '07', title: 'Fase V: Auditoría Forense pgaudit', sub: 'Trazabilidad DDL/Roles y envío SIEM', fx: 'Forensic Scan' },
+      { num: '08', title: 'Resultados CIS y Conclusiones', sub: 'Cumplimiento 98.4% y DevSecOps', fx: 'Executive Triumph' }
     ]
   };
 
@@ -34,10 +36,58 @@ document.addEventListener('DOMContentLoaded', () => {
   const drawerThumbnails = document.getElementById('drawerThumbnails');
   const slideDotsContainer = document.getElementById('slideDotsContainer');
   const btnFullscreen = document.getElementById('btnFullscreen');
+  const btnThemeToggle = document.getElementById('btnThemeToggle');
+  const themeLabel = document.getElementById('themeLabel');
+  const themeIcon = document.getElementById('themeIcon');
+  const btnReplay = document.getElementById('btnReplay');
+  const animLabel = document.getElementById('animLabel');
   const btnDownloadMenu = document.getElementById('btnDownloadMenu');
   const downloadsDropdown = document.getElementById('downloadsDropdown');
   const toastNotification = document.getElementById('toastNotification');
   const toastMessage = document.getElementById('toastMessage');
+
+  // Control de Tema (Modo Claro / Modo Oscuro)
+  function applyTheme(theme) {
+    state.theme = theme;
+    const isLight = theme === 'light';
+    document.body.classList.toggle('light-mode', isLight);
+    localStorage.setItem('presentation-theme', theme);
+
+    if (themeLabel) {
+      themeLabel.textContent = isLight ? 'Modo Claro' : 'Modo Oscuro';
+    }
+    if (themeIcon) {
+      themeIcon.innerHTML = isLight ? `
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      ` : `
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      `;
+    }
+    if (btnThemeToggle) {
+      btnThemeToggle.setAttribute('title', isLight ? 'Cambiar a Modo Oscuro [T]' : 'Cambiar a Modo Claro [T]');
+    }
+  }
+
+  function toggleTheme() {
+    const nextTheme = state.theme === 'light' ? 'dark' : 'light';
+    applyTheme(nextTheme);
+    showToast(nextTheme === 'light' ? '☀️ Modo Claro activado' : '🌙 Modo Oscuro activado');
+  }
+
+  // Actualizar Badge de Animación
+  function updateAnimBadge(index) {
+    if (animLabel && state.slideTitles[index - 1]) {
+      animLabel.textContent = `FX: ${state.slideTitles[index - 1].fx}`;
+    }
+  }
 
   // Inicializar Dots de Navegación
   function initDots() {
@@ -74,28 +124,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Función de Cambio de Diapositiva
-  function goToSlide(targetSlide) {
+  // Función de Cambio de Diapositiva con Animación de Entrada y Salida
+  function goToSlide(targetSlide, forceDirection) {
     if (targetSlide < 1 || targetSlide > state.totalSlides) return;
+    if (targetSlide === state.currentSlide && !forceDirection) return;
+    if (state.isTransitioning) return; // Evitar solapamiento de animaciones
 
-    // Desactivar diapositiva actual
     const currentEl = document.querySelector(`.slide[data-index="${state.currentSlide}"]`);
-    if (currentEl) {
-      currentEl.classList.remove('active');
-    }
+    const nextEl = document.querySelector(`.slide[data-index="${targetSlide}"]`);
+    if (!nextEl) return;
 
-    // Activar nueva diapositiva
+    const direction = forceDirection || (targetSlide >= state.currentSlide ? 'next' : 'prev');
     state.currentSlide = targetSlide;
-    const nextEl = document.querySelector(`.slide[data-index="${state.currentSlide}"]`);
-    if (nextEl) {
-      nextEl.classList.add('active');
-      nextEl.scrollTop = 0;
-    }
+    state.isTransitioning = true;
 
-    // Actualizar UI (Contador, Barra de Progreso, Dots)
+    // Actualizar UI (Contador, Barra de Progreso, Badge FX)
     currentSlideNum.textContent = String(state.currentSlide).padStart(2, '0');
     const percent = (state.currentSlide / state.totalSlides) * 100;
     progressFill.style.width = `${percent}%`;
+    updateAnimBadge(state.currentSlide);
 
     // Actualizar estado de dots
     const dots = document.querySelectorAll('.slide-dot');
@@ -114,6 +161,59 @@ document.addEventListener('DOMContentLoaded', () => {
     btnNext.disabled = state.currentSlide === state.totalSlides;
     btnPrev.style.opacity = state.currentSlide === 1 ? '0.45' : '1';
     btnNext.style.opacity = state.currentSlide === state.totalSlides ? '0.45' : '1';
+
+    // Carga inicial o misma diapositiva
+    if (!currentEl || currentEl === nextEl) {
+      document.querySelectorAll('.slide').forEach(s => {
+        s.classList.remove('active', 'is-exiting', 'is-entering', 'exit-next', 'exit-prev', 'enter-next', 'enter-prev');
+      });
+      nextEl.classList.add('active', 'is-entering', direction === 'next' ? 'enter-next' : 'enter-prev');
+      nextEl.scrollTop = 0;
+      setTimeout(() => {
+        nextEl.classList.remove('is-entering', 'enter-next', 'enter-prev');
+        state.isTransitioning = false;
+      }, 500);
+      return;
+    }
+
+    // ANIMACIÓN DE SALIDA EN DIAPOSITIVA ACTUAL
+    currentEl.classList.remove('is-entering', 'enter-next', 'enter-prev');
+    currentEl.classList.add('is-exiting', direction === 'next' ? 'exit-next' : 'exit-prev');
+
+    // ANIMACIÓN DE ENTRADA EN NUEVA DIAPOSITIVA
+    nextEl.classList.remove('is-exiting', 'exit-next', 'exit-prev');
+    nextEl.classList.add('active', 'is-entering', direction === 'next' ? 'enter-next' : 'enter-prev');
+    nextEl.scrollTop = 0;
+
+    // Concluir transición cinemática (480ms)
+    setTimeout(() => {
+      currentEl.classList.remove('active', 'is-exiting', 'exit-next', 'exit-prev');
+      nextEl.classList.remove('is-entering', 'enter-next', 'enter-prev');
+      state.isTransitioning = false;
+    }, 480);
+  }
+
+  // Reproducir animación original de la diapositiva actual
+  function replayCurrentAnimation() {
+    if (state.isTransitioning) return;
+    const currentEl = document.querySelector(`.slide[data-index="${state.currentSlide}"]`);
+    if (!currentEl) return;
+
+    state.isTransitioning = true;
+    if (btnReplay) btnReplay.classList.add('is-spinning');
+
+    currentEl.classList.remove('is-entering', 'enter-next', 'enter-prev', 'is-exiting', 'exit-next', 'exit-prev');
+    void currentEl.offsetWidth; // Forzar reflujo de renderizado
+    currentEl.classList.add('is-entering', 'enter-next');
+
+    const fxName = state.slideTitles[state.currentSlide - 1]?.fx || 'Efecto';
+    showToast(`✨ Reproduciendo animación original: ${fxName}`);
+
+    setTimeout(() => {
+      currentEl.classList.remove('is-entering', 'enter-next');
+      if (btnReplay) btnReplay.classList.remove('is-spinning');
+      state.isTransitioning = false;
+    }, 500);
   }
 
   // Navegación Siguiente / Anterior
@@ -284,6 +384,12 @@ document.addEventListener('DOMContentLoaded', () => {
   btnGrid.addEventListener('click', () => toggleDrawer());
   btnCloseDrawer.addEventListener('click', () => toggleDrawer(false));
   btnFullscreen.addEventListener('click', toggleFullscreen);
+  if (btnThemeToggle) {
+    btnThemeToggle.addEventListener('click', toggleTheme);
+  }
+  if (btnReplay) {
+    btnReplay.addEventListener('click', replayCurrentAnimation);
+  }
 
   // Atajos de Teclado Profesionales
   document.addEventListener('keydown', (e) => {
@@ -346,6 +452,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activeUp) activeUp.scrollTop -= 80;
         break;
 
+      case 'r':
+      case 'R':
+        e.preventDefault();
+        replayCurrentAnimation();
+        break;
+
+      case 't':
+      case 'T':
+        e.preventDefault();
+        toggleTheme();
+        break;
+
       case '1': case '2': case '3': case '4':
       case '5': case '6': case '7': case '8':
         goToSlide(parseInt(e.key, 10));
@@ -390,5 +508,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Inicializar componentes
   initDots();
   initDrawer();
+  const initialTheme = localStorage.getItem('presentation-theme') || 'light';
+  applyTheme(initialTheme);
   goToSlide(1);
 });

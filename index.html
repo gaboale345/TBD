@@ -12,7 +12,7 @@
   <!-- Estilos separados según especificación -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="light-mode">
 
   <!-- Ambient Light Overlay -->
   <div class="ambient-glow-layer"></div>
@@ -37,6 +37,18 @@
     </div>
 
     <div class="chrome-right">
+      <button class="btn-ghost" id="btnThemeToggle" title="Alternar Modo Claro / Modo Oscuro [T]">
+        <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <span class="btn-label" id="themeLabel">Modo Claro</span>
+        <span class="key-shortcut">[T]</span>
+      </button>
+
+      <button class="btn-ghost" id="btnReplay" title="Reproducir animación de diapositiva [R]">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+        <span class="btn-label" id="animLabel">FX: Cyber Nexus</span>
+        <span class="key-shortcut">[R]</span>
+      </button>
+
       <button class="btn-ghost" id="btnGrid" title="Ver miniaturas de diapositivas [G]">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
         <span class="btn-label">Diapositivas</span>
@@ -88,7 +100,7 @@
     <!-- ===================================================================
          SLIDE 1: PORTADA Y OBJETIVO ESTRATÉGICO
     ==================================================================== -->
-    <section class="slide active" id="slide-1" data-index="1">
+    <section class="slide active" id="slide-1" data-index="1" data-theme="hero-nexus">
       <div class="slide-inner">
         <div class="slide-header">
           <div class="pill-tag">
@@ -238,7 +250,7 @@
     <!-- ===================================================================
          SLIDE 2: SUPERFICIE DE ATAQUE Y MODELO DE AMENAZAS
     ==================================================================== -->
-    <section class="slide" id="slide-2" data-index="2">
+    <section class="slide" id="slide-2" data-index="2" data-theme="threat-radar">
       <div class="slide-inner">
         <div class="slide-header">
           <div class="pill-tag">
@@ -397,7 +409,7 @@
     <!-- ===================================================================
          SLIDE 3: FASE I - HARDENING DE KERNEL Y SISTEMA OPERATIVO
     ==================================================================== -->
-    <section class="slide" id="slide-3" data-index="3">
+    <section class="slide" id="slide-3" data-index="3" data-theme="kernel-sandbox">
       <div class="slide-inner">
         <div class="slide-header">
           <div class="pill-tag">
@@ -466,7 +478,7 @@
     <!-- ===================================================================
          SLIDE 4: FASE II - CRIPTOGRAFÍA EN TRÁNSITO (TLS 1.3)
     ==================================================================== -->
-    <section class="slide" id="slide-4" data-index="4">
+    <section class="slide" id="slide-4" data-index="4" data-theme="cipher-stream">
       <div class="slide-inner">
         <div class="slide-header">
           <div class="pill-tag">
@@ -527,7 +539,7 @@
     <!-- ===================================================================
          SLIDE 5: FASE III - AUTENTICACIÓN SCRAM-SHA-256 & CORTAFUEGOS
     ==================================================================== -->
-    <section class="slide" id="slide-5" data-index="5">
+    <section class="slide" id="slide-5" data-index="5" data-theme="firewall-barrier">
       <div class="slide-inner">
         <div class="slide-header">
           <div class="pill-tag">
@@ -599,7 +611,7 @@
     <!-- ===================================================================
          SLIDE 6: FASE IV - CONTROL DE ACCESO RBAC Y SANEAMIENTO
     ==================================================================== -->
-    <section class="slide" id="slide-6" data-index="6">
+    <section class="slide" id="slide-6" data-index="6" data-theme="vault-rbac">
       <div class="slide-inner">
         <div class="slide-header">
           <div class="pill-tag">
@@ -657,7 +669,7 @@
     <!-- ===================================================================
          SLIDE 7: FASE V - AUDITORÍA FORENSE PGAUDIT Y LOGS
     ==================================================================== -->
-    <section class="slide" id="slide-7" data-index="7">
+    <section class="slide" id="slide-7" data-index="7" data-theme="forensic-telemetry">
       <div class="slide-inner">
         <div class="slide-header">
           <div class="pill-tag">
@@ -722,7 +734,7 @@
     <!-- ===================================================================
          SLIDE 8: RESULTADOS, MATRIZ CIS Y CONCLUSIONES
     ==================================================================== -->
-    <section class="slide" id="slide-8" data-index="8">
+    <section class="slide" id="slide-8" data-index="8" data-theme="executive-triumph">
       <div class="slide-inner">
         <div class="slide-header">
           <div class="pill-tag">
@@ -842,7 +854,7 @@
     </div>
 
     <div class="nav-controls-right">
-      <span class="nav-info-text">Navegación con teclas: <kbd>←</kbd> <kbd>→</kbd> <kbd>F</kbd> <kbd>G</kbd></span>
+      <span class="nav-info-text">Navegación: <kbd>←</kbd> <kbd>→</kbd> <kbd>F</kbd> <kbd>G</kbd> <kbd>R</kbd> <kbd>T</kbd> (Tema)</span>
     </div>
   </footer>
 

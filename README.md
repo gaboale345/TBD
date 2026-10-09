@@ -63,6 +63,8 @@ Luego visita `http://localhost:8080/index.html`.
 * <kbd>↓</kbd> / <kbd>↑</kbd> o Rueda del ratón: Desplazamiento vertical fluido dentro de la diapositiva.
 * <kbd>F</kbd>: Alternar Pantalla Completa (*Fullscreen*).
 * <kbd>G</kbd>: Abrir/cerrar cajón de miniaturas (*Slide Drawer*).
+* <kbd>R</kbd>: Reproducir de nuevo la animación original de la diapositiva activa.
+* <kbd>T</kbd>: Alternar entre Modo Claro y Modo Oscuro (*Theme Switch*).
 * <kbd>1</kbd> a <kbd>8</kbd>: Salto directo a la diapositiva seleccionada.
 
 ### 2. Generación de Documentos Office

@@ -437,6 +437,11 @@ def create_deck():
               "• Rotación automatizada de certificados TLS cada 90 días.",
               "• Simulacros semestrales de restauración de backups inmutables (Disaster Recovery)."], False)
 
+    # =========================================================================
+    # TRANSICIONES Y ANIMACIONES ORIGINALES POR DIAPOSITIVA (PPTX)
+    # =========================================================================
+    apply_transitions(prs)
+
     output_path = "d:/TDB2/presentacion_hardening_sgbd.pptx"
     try:
         prs.save(output_path)
@@ -447,5 +452,29 @@ def create_deck():
         print(f"Aviso: 'presentacion_hardening_sgbd.pptx' está actualmente abierto en PowerPoint. Se guardó la versión actualizada en: {alt_path}")
 
 
+def apply_transitions(prs):
+    """Aplica efectos de transición de entrada y salida originales a cada diapositiva en formato PowerPoint."""
+    from pptx.oxml import parse_xml
+    transitions = [
+        '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" spd="med"><p:zoom/></p:transition>',       # Slide 1: Zoom / Apertura
+        '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" spd="med"><p:wipe dir="r"/></p:transition>',  # Slide 2: Barrido Láser Radar
+        '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" spd="med"><p:push dir="l"/></p:transition>',  # Slide 3: Empuje Modular Kernel
+        '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" spd="med"><p:fade/></p:transition>',          # Slide 4: Desvanecimiento Criptográfico
+        '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" spd="med"><p:split dir="in"/></p:transition>', # Slide 5: Compuerta Perimetral Firewall
+        '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" spd="med"><p:wheel/></p:transition>',         # Slide 6: Rueda de Bóveda RBAC
+        '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" spd="med"><p:push dir="u"/></p:transition>',  # Slide 7: Flujo Forense Ascendente
+        '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" spd="med"><p:checker/></p:transition>',      # Slide 8: Comprobación Victoria CIS
+    ]
+    for idx, slide in enumerate(prs.slides):
+        xml_str = transitions[idx % len(transitions)]
+        t_elem = parse_xml(xml_str)
+        clr = slide._element.find('{http://schemas.openxmlformats.org/presentationml/2006/main}clrMapOvr')
+        if clr is not None:
+            clr.addprevious(t_elem)
+        else:
+            slide._element.append(t_elem)
+
+
 if __name__ == "__main__":
     create_deck()
+
