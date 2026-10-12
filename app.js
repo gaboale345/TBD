@@ -7,20 +7,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // Estado de la presentación
   const state = {
     currentSlide: 1,
-    totalSlides: 8,
+    totalSlides: 14,
     theme: 'light',
     isDrawerOpen: false,
     isFullscreen: false,
     isTransitioning: false,
     slideTitles: [
-      { num: '01', title: 'Objetivos y Alcance Estratégico', sub: 'Defensa en Profundidad & CIS Benchmark', fx: 'Cyber Nexus' },
-      { num: '02', title: 'Superficie de Ataque & STRIDE', sub: 'Identificación de 4 vectores críticos', fx: 'Threat Radar' },
-      { num: '03', title: 'Fase I: Kernel & SO Hardening', sub: 'sysctl.conf, permisos 0700 y Systemd', fx: 'Kernel Sandbox' },
-      { num: '04', title: 'Fase II: Criptografía en Tránsito', sub: 'TLS 1.3 forzado y ciphers ECDHE', fx: 'Cipher Stream' },
-      { num: '05', title: 'Fase III: Autenticación & Red', sub: 'SCRAM-SHA-256 y firewall pg_hba.conf', fx: 'Firewall Gate' },
-      { num: '06', title: 'Fase IV: Control de Acceso RBAC', sub: 'Revocación de public y roles mínimos', fx: 'RBAC Vault' },
-      { num: '07', title: 'Fase V: Auditoría Forense pgaudit', sub: 'Trazabilidad DDL/Roles y envío SIEM', fx: 'Forensic Scan' },
-      { num: '08', title: 'Resultados CIS y Conclusiones', sub: 'Cumplimiento 98.4% y DevSecOps', fx: 'Executive Triumph' }
+      { num: '01', title: 'Portada y Ficha Técnica Académica', sub: 'Universidad Privada Domingo Savio — Ingeniería en Sistemas', fx: 'Cyber Nexus' },
+      { num: '02', title: 'Resumen y Enfoque Metodológico', sub: 'Endurecimiento Progresivo y Alcance Demostrable', fx: 'Methodology Shield' },
+      { num: '03', title: 'Introducción al Hardening de SGBD', sub: 'Conceptos Clave de Bastionado e INCIBE 2023', fx: 'Threat Radar' },
+      { num: '04', title: 'Objetivo y Entorno de Laboratorio', sub: 'PostgreSQL 16 en Ubuntu Server 24.04 LTS', fx: 'Lab Matrix' },
+      { num: '05', title: 'Instalación de PostgreSQL 16', sub: 'Aprovisionamiento de Paquetes y Comprobación del Servicio', fx: 'Provisioning' },
+      { num: '06', title: 'Medida 1: Actualización del Sistema', sub: 'Seguridad en Capas y Mitigación de Vulnerabilidades (Canonical)', fx: 'Patch Shield' },
+      { num: '07', title: 'Medida 2: Restricción de Conexiones', sub: 'Control de Acceso Perimetral en pg_hba.conf y Denegación', fx: 'Firewall Gate' },
+      { num: '08', title: 'Medida 3: Autenticación Robusta', sub: 'Cifrado de Credenciales con SCRAM-SHA-256', fx: 'Crypto Vault' },
+      { num: '09', title: 'Medida 4: Principio de Mínimo Privilegio', sub: 'Segregación Funcional de Roles (rol_lectura y rol_escritura)', fx: 'RBAC Matrix' },
+      { num: '10', title: 'Medida 4: Saneamiento de Schema Public', sub: 'Revocación de Permiso CREATE para Prevención de Abusos', fx: 'Logic Shield' },
+      { num: '11', title: 'Medidas 5 y 6: Archivos de Datos y TLS', sub: 'Permisos Restrictivos 0700/0600 y Criptografía X.509', fx: 'Cipher Stream' },
+      { num: '12', title: 'Medidas 7 y 8: Registros y Respaldo Lógico', sub: 'Logging Nativo de Conexiones y Backup con pg_dump', fx: 'Resilience Lock' },
+      { num: '13', title: 'Verificación Experimental de la Configuración', sub: 'Matriz de 7 Pruebas Técnicas Demostrables en Defensa', fx: 'Audit Scan' },
+      { num: '14', title: 'Resultados Comparativos y Conclusiones', sub: 'Balance Antes vs Después del Hardening y Trabajo Futuro', fx: 'Executive Triumph' }
     ]
   };
 

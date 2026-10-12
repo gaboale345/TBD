@@ -838,8 +838,17 @@ body::before {
   grid-auto-rows: minmax(min-content, auto);
 }
 
+.grid-2-cols {
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: minmax(min-content, auto);
+}
+
 .col-span-2 {
   grid-column: span 2;
+}
+
+.col-span-3 {
+  grid-column: span 3;
 }
 
 .bento-stacked {
@@ -1378,8 +1387,8 @@ body::before {
 .c-kw      { color: #38bdf8; font-weight: 700; }
 
 .terminal-mini {
-  background: #080c16;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0b162c;
+  border: 1.5px solid #38bdf8;
   border-radius: 8px;
   padding: 10px 12px;
   display: flex;
@@ -1388,16 +1397,18 @@ body::before {
   font-family: var(--font-mono);
   font-size: 11px;
   color: #38bdf8;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 14px rgba(56, 189, 248, 0.2);
 }
 
 .terminal-mini code::before {
   content: '$ ';
-  color: var(--text-muted);
+  color: #34d399;
+  font-weight: bold;
 }
 
 .sql-box {
-  background: #080c16;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0b162c;
+  border: 1.5px solid #38bdf8;
   border-radius: 8px;
   padding: 10px 12px;
   display: flex;
@@ -1406,6 +1417,97 @@ body::before {
   font-family: var(--font-mono);
   font-size: 11px;
   color: #a7f3d0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 14px rgba(56, 189, 248, 0.2);
+}
+
+/* Subpanel de Código y Comandos con Fondo Diferente y Alto Resalte Visual */
+.code-terminal {
+  background: #0b162c !important; /* Fondo azul medianoche zafiro con alto contraste sobre la tarjeta */
+  border: 1.5px solid #38bdf8 !important; /* Borde cían eléctrico resplandeciente */
+  border-left: 4px solid #38bdf8 !important; /* Acento perimetral izquierdo de terminal de comandos */
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 16px rgba(56, 189, 248, 0.25) !important;
+  border-radius: 8px !important;
+  padding: 10px 14px !important;
+  margin-top: auto !important;
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+  transition: all var(--transition-normal) !important;
+}
+
+.code-terminal::before {
+  content: '⚡ COMANDOS / DIRECTIVAS';
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.16);
+  padding: 2px 8px;
+  border-radius: 4px;
+  width: fit-content;
+  margin-bottom: 4px;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.code-terminal:hover {
+  background: #0f1f3d !important;
+  border-color: #60a5fa !important;
+  border-left-color: #60a5fa !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 25px rgba(59, 130, 246, 0.45) !important;
+  transform: translateY(-2px);
+}
+
+.code-terminal code {
+  font-family: var(--font-mono) !important;
+  font-size: 11px !important;
+  line-height: 1.55 !important;
+  color: #f1f5f9 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  display: block !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.08);
+}
+
+/* Modo Claro: Terminal oscura clásica de alto contraste */
+.light-mode .code-terminal {
+  background: #0f172a !important;
+  border: 1.5px solid #2563eb !important;
+  border-left: 4px solid #2563eb !important;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.25), 0 0 16px rgba(37, 99, 235, 0.2) !important;
+}
+
+.light-mode .code-terminal::before {
+  color: #60a5fa;
+  background: rgba(37, 99, 235, 0.25);
+  border-color: rgba(96, 165, 250, 0.5);
+}
+
+.light-mode .code-terminal code {
+  color: #f8fafc !important;
+}
+
+/* Bloques de código inline resaltados */
+code {
+  font-family: var(--font-mono);
+  background: rgba(56, 189, 248, 0.16);
+  color: #38bdf8;
+  padding: 2px 7px;
+  border-radius: 5px;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.light-mode code {
+  background: rgba(37, 99, 235, 0.12);
+  color: #1d4ed8;
+  border-color: rgba(37, 99, 235, 0.3);
 }
 
 /* Comparativa de Hashes (Slide 5) */

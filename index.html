@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hardening de SGBD | Presentación Ejecutiva PostgreSQL 16</title>
-  <meta name="description" content="Presentación interactiva de endurecimiento y hardening de bases de datos según estándares CIS Benchmark v1.3 y NIST SP 800-123.">
+  <title>Hardening de SGBD | Actividad Académica II - UPDS (PostgreSQL 16)</title>
+  <meta name="description" content="Informe Práctico de Instalación y Hardening de un Sistema Gestor de Bases de Datos (PostgreSQL 16 en Ubuntu Server 24.04 LTS) - Universidad Privada Domingo Savio">
   <!-- Google Fonts: Poppins, Inter, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
     <div class="chrome-left">
       <div class="brand-badge">
         <span class="pulse-dot"></span>
-        <span class="badge-text">CIS BENCHMARK v1.3 // POSTGRESQL 16</span>
+        <span class="badge-text">UPDS // POSTGRESQL 16 // HARDENING SGBD</span>
       </div>
       <span class="deck-title-mini">Informe Práctico de Hardening</span>
     </div>
@@ -32,7 +32,7 @@
         <div class="progress-fill" id="progressFill"></div>
       </div>
       <div class="slide-counter-badge">
-        <span id="currentSlideNum">01</span><span class="counter-total"> / 08</span>
+        <span id="currentSlideNum">01</span><span class="counter-total"> / 14</span>
       </div>
     </div>
 
@@ -68,18 +68,11 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
         <div class="dropdown-menu" id="downloadsDropdown">
-          <a href="informe_hardening_sgbd.docx" download class="dropdown-item">
-            <span class="item-icon docx-icon">DOCX</span>
-            <div class="item-text">
-              <strong>Informe Completo Word</strong>
-              <small>Documento oficial .DOC detallado</small>
-            </div>
-          </a>
           <a href="presentacion_hardening_sgbd.pptx" download class="dropdown-item">
             <span class="item-icon pptx-icon">PPTX</span>
             <div class="item-text">
               <strong>Presentación PowerPoint</strong>
-              <small>8 diapositivas formato Widescreen</small>
+              <small>14 diapositivas fieles al informe PDF</small>
             </div>
           </a>
           <a href="INFORME_TECNICO_HARDENING_SGBD.md" target="_blank" class="dropdown-item">
@@ -87,6 +80,13 @@
             <div class="item-text">
               <strong>Informe Técnico Markdown</strong>
               <small>Documentación técnica en texto plano</small>
+            </div>
+          </a>
+          <a href="README.md" target="_blank" class="dropdown-item">
+            <span class="item-icon docx-icon">GUÍA</span>
+            <div class="item-text">
+              <strong>Recomendaciones de Mejora</strong>
+              <small>Guía para elevar el informe académico</small>
             </div>
           </a>
         </div>
@@ -98,633 +98,204 @@
   <main class="presentation-stage" id="presentationStage">
 
     <!-- ===================================================================
-         SLIDE 1: PORTADA Y OBJETIVO ESTRATÉGICO
+         SLIDE 1: PORTADA ACADÉMICA OFICIAL (UPDS)
     ==================================================================== -->
     <section class="slide active" id="slide-1" data-index="1" data-theme="hero-nexus">
       <div class="slide-inner">
         <div class="slide-header">
           <div class="pill-tag">
             <span class="tag-glow"></span>
-            SECTOR CRÍTICO & CIBERSEGURIDAD // CIS BENCHMARK v1.3
+            UNIVERSIDAD PRIVADA DOMINGO SAVIO // ACTIVIDAD ACADÉMICA II
           </div>
-          <h1 class="slide-title">Despliegue y Hardening de SGBD Empresarial</h1>
-          <p class="slide-subtitle">Fortificación perimetral, criptografía en tránsito y reposo, segregación RBAC y auditoría forense con PostgreSQL 16 LTS</p>
+          <h1 class="slide-title">Informe Práctico de Instalación y Hardening de un SGBD</h1>
+          <p class="slide-subtitle">Práctica de Laboratorio en PostgreSQL 16 sobre Ubuntu Server 24.04 LTS</p>
         </div>
 
         <div class="bento-grid grid-4-cols">
-          <!-- FILA 1 -->
-          <!-- Tarjeta 1 (Span 2 cols): Objetivo y Pilares -->
+          <!-- Tarjeta 1 (Span 2 cols): Ficha Académica -->
           <div class="bento-card col-span-2 highlight-card">
             <div class="card-top-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-              <span class="card-status-badge">Directiva Prioritaria</span>
+              <span class="card-status-badge">Documento Oficial</span>
             </div>
-            <h3 class="card-title">Objetivo Estratégico: Defensa en Profundidad</h3>
-            <p class="card-desc">Transformar una instalación estándar ("vanilla") vulnerable en una fortaleza de datos corporativa, aplicando un blindaje concéntrico contra fugas masivas y escalamiento de privilegios.</p>
+            <h3 class="card-title">Ficha Técnica de la Actividad Académica</h3>
+            <p class="card-desc">Trabajo técnico y práctico desarrollado para la defensa académica de la materia Taller de Base de Datos II, Facultad de Ingeniería.</p>
             
-            <div class="pillar-row">
-              <div class="pillar-item">
-                <span class="pillar-title">Confidencialidad</span>
-                <span class="pillar-desc">TLS 1.3 + LUKS2 AES-256</span>
-              </div>
-              <div class="pillar-item">
-                <span class="pillar-title">Integridad</span>
-                <span class="pillar-desc">SCRAM-SHA-256 + RBAC</span>
-              </div>
-              <div class="pillar-item">
-                <span class="pillar-title">Trazabilidad</span>
-                <span class="pillar-desc">pgaudit en memoria RAM</span>
-              </div>
-            </div>
+            <ul class="bullet-list-compact" style="margin-top: 8px;">
+              <li><strong>Autores de la Práctica:</strong> Adriana Rodríguez Sotelo y Gabriel Kevin Alcon Maydana</li>
+              <li><strong>Carrera Profesional:</strong> Ingeniería en Sistemas</li>
+              <li><strong>Docente de la Materia:</strong> Ing. Pablo Moscoso Zeballos</li>
+              <li><strong>Autoridades Académicas:</strong> MSc. Wilmer Campos Saavedra (Decano) | MSc. José Antonio Landriel P. (Vicerrector)</li>
+              <li><strong>Sede y Fecha:</strong> Santa Cruz de la Sierra - Bolivia, 08 de octubre de 2026</li>
+            </ul>
 
-            <div class="card-footer-metrics">
-              <div class="metric-item">
-                <span class="metric-value text-gradient-cyan">98.4%</span>
-                <span class="metric-label">Cumplimiento CIS Nivel 2</span>
-              </div>
-              <div class="metric-item">
-                <span class="metric-value text-emerald">0 Vulnerabilidades</span>
-                <span class="metric-label">Severidad Alta / Crítica</span>
-              </div>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>Carrera: Ingeniería en Sistemas | Semestre II-2026<br>Materia: Taller de Base de Datos II / Ciberseguridad<br>Sede: Santa Cruz de la Sierra — Bolivia</code>
             </div>
           </div>
 
-          <!-- Tarjeta 2 (Span 1 col): Postura & KPIs -->
+          <!-- Tarjeta 2: Propósito y Alcance Real -->
           <div class="bento-card">
             <div class="card-top-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-              <span class="badge-pill green">Auditado</span>
+              <span class="badge-pill blue">Alcance Real</span>
             </div>
-            <h3 class="card-title">Postura de Seguridad</h3>
-            <div class="score-comparison" style="padding: 4px 0;">
-              <div class="score-box">
-                <span class="score-num" style="font-size: 20px; color: #f87171;">34.2%</span>
-                <span class="score-lbl">Vanilla</span>
-              </div>
-              <div class="score-arrow" style="font-size: 16px;">➔</div>
-              <div class="score-box">
-                <span class="score-num text-emerald" style="font-size: 20px;">98.4%</span>
-                <span class="score-lbl">Hardened</span>
-              </div>
-            </div>
-            <p class="card-desc-small"><strong>-89%</strong> en superficie de exposición de red y <strong>28/28</strong> controles CIS aprobados.</p>
+            <h3 class="card-title">Propósito & Alcance</h3>
+            <p class="card-desc">Partir de una instalación básica e implementar controles esenciales que reduzcan accesos innecesarios.</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Enfoque comprensible para entorno de laboratorio y defensa.</li>
+              <li>Medidas verificables directamente en consola de comandos.</li>
+              <li><strong>Transparencia:</strong> No pretende certificar el servidor ni declarar cumplimiento empresarial.</li>
+            </ul>
           </div>
 
-          <!-- Tarjeta 3 (Span 1 col): Stack de Producción -->
+          <!-- Tarjeta 3: Entorno Desplegado -->
           <div class="bento-card">
             <div class="card-top-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
             </div>
-            <h3 class="card-title">Stack de Producción</h3>
-            <p class="card-desc">Instancia validada con repositorios oficiales firmados:</p>
-            <div class="tag-cloud">
+            <h3 class="card-title">Entorno Desplegado</h3>
+            <p class="card-desc">Instalación estandarizada en servidor:</p>
+            <div class="tag-cloud" style="margin-bottom: 8px;">
+              <span class="chip">PostgreSQL 16</span>
               <span class="chip">Ubuntu 24.04 LTS</span>
-              <span class="chip">Kernel Linux 6.8</span>
-              <span class="chip">PostgreSQL 16 PGDG</span>
-              <span class="chip">Systemd Hardened</span>
+              <span class="chip">192.168.1.0/24</span>
+              <span class="chip">app_practica</span>
+            </div>
+            <div class="code-terminal">
+              <code>Red Permitida: 192.168.1.0/24<br>Base de Datos:  app_practica<br>Usuario App:    app_user (hostssl)</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 2: RESUMEN Y ENFOQUE METODOLÓGICO
+    ==================================================================== -->
+    <section class="slide" id="slide-2" data-index="2" data-theme="methodology-shield">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            SECCIÓN RESUMEN // ENFOQUE DE LA ACTIVIDAD
+          </div>
+          <h2 class="slide-title">Resumen Ejecutivo y Criterio de Selección de Medidas</h2>
+          <p class="slide-subtitle">Filosofía de fortificación progresiva sin sobredimensionamiento ni afirmaciones no demostrables</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              <span class="badge-pill blue">Justificación</span>
+            </div>
+            <h3 class="card-title">Justificación del Proyecto</h3>
+            <p class="card-desc">Un SGBD por defecto prioriza la conectividad inmediata sobre la protección. El informe parte de esa base para aplicar mejoras incrementales.</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Reducción sistemática de la superficie de ataque.</li>
+              <li>Controles sencillos referenciando PostgreSQL, Ubuntu, INCIBE y CIS.</li>
+              <li>Eliminación de configuraciones superfluas que no puedan ser probadas.</li>
+            </ul>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>Criterio: Medidas comprensibles, ejecutables y explicables en la defensa.</code>
             </div>
           </div>
 
-          <!-- FILA 2 -->
-          <!-- Tarjeta 4 (Span 1 col): Estándares -->
-          <div class="bento-card">
+          <div class="bento-card highlight-card">
             <div class="card-top-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span class="badge-pill green">6 Ejes Básicos</span>
             </div>
-            <h3 class="card-title">Marcos Normativos</h3>
-            <ul class="bullet-list-compact" style="margin-top: 2px;">
-              <li><strong>CIS Benchmark:</strong> Nivel 1 & 2</li>
-              <li><strong>NIST SP 800-123:</strong> Servidores</li>
-              <li><strong>PCI-DSS v4.0:</strong> Req. 3, 7, 8, 10</li>
-              <li><strong>ISO 27001:2022:</strong> Controles A.8</li>
+            <h3 class="card-title">Medidas Seleccionadas</h3>
+            <p class="card-desc">Los 6 ejes técnicos clave implementados en el informe oficial:</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li><strong>1. Actualización:</strong> Sistema operativo y paquetes de PostgreSQL.</li>
+              <li><strong>2. Control de Acceso:</strong> Filtro de red en <code>pg_hba.conf</code> y contraseñas seguras.</li>
+              <li><strong>3. Mínimo Privilegio:</strong> Segregación por roles de lectura y escritura.</li>
+              <li><strong>4. Cifrado TLS:</strong> Protección del tráfico de red en tránsito.</li>
+              <li><strong>5. Registros Básicos:</strong> Trazabilidad nativa de conexiones y desconexiones.</li>
+              <li><strong>6. Respaldo:</strong> Copia lógica portable con <code>pg_dump</code>.</li>
             </ul>
           </div>
 
-          <!-- Tarjeta 5 (Span 2 cols): Pipeline en 4 Capas -->
-          <div class="bento-card col-span-2">
-            <div class="card-top-icon">
-              <span class="card-title text-cyan">Pipeline Defensivo Concéntrico (4 Capas)</span>
-              <span class="badge-pill blue">Arquitectura Activa</span>
-            </div>
-            <div class="defense-pipeline">
-              <div class="pipeline-step">
-                <span class="pipeline-num">Capa 01</span>
-                <span class="pipeline-name">Kernel & SO</span>
-                <span class="pipeline-detail">sysctl, ASLR 2, chmod 0700 y sandbox Systemd</span>
-              </div>
-              <div class="pipeline-step">
-                <span class="pipeline-num">Capa 02</span>
-                <span class="pipeline-name">Red & TLS 1.3</span>
-                <span class="pipeline-detail">Cero texto plano, ciphers AEAD y cortafuegos pg_hba</span>
-              </div>
-              <div class="pipeline-step">
-                <span class="pipeline-num">Capa 03</span>
-                <span class="pipeline-name">Auth & RBAC</span>
-                <span class="pipeline-detail">SCRAM-SHA-256, roles mínimos y revoke public</span>
-              </div>
-              <div class="pipeline-step">
-                <span class="pipeline-num">Capa 04</span>
-                <span class="pipeline-name">Auditoría SIEM</span>
-                <span class="pipeline-detail">pgaudit inmutable, rotación 0600 y retención WORM</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tarjeta 6 (Span 1 col): Estado de Auditoría -->
-          <div class="bento-card highlight-card">
-            <div class="card-top-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            </div>
-            <h3 class="card-title text-emerald">Estado de Validación</h3>
-            <p class="card-desc" style="margin-top: 2px;">Certificación post-despliegue conforme a línea base corporativa.</p>
-            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 4px;">
-              <span class="status-pill success" style="text-align: center; font-size: 11px;">PRODUCCIÓN APROBADA</span>
-              <span class="card-desc-small" style="text-align: center;">Verificado con pgtoolkit & Lynis</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================================================================
-         SLIDE 2: SUPERFICIE DE ATAQUE Y MODELO DE AMENAZAS
-    ==================================================================== -->
-    <section class="slide" id="slide-2" data-index="2" data-theme="threat-radar">
-      <div class="slide-inner">
-        <div class="slide-header">
-          <div class="pill-tag">
-            <span class="tag-glow"></span>
-            ANÁLISIS DE RIESGO // METODOLOGÍA STRIDE & CVSS
-          </div>
-          <h2 class="slide-title">Superficie de Ataque & Neutralización de Amenazas</h2>
-          <p class="slide-subtitle">Vectores críticos identificados en despliegues predeterminados y arquitectura de neutralización Defense-in-Depth</p>
-        </div>
-
-        <div class="bento-grid grid-4-cols">
-          <!-- FILA 1: Los 4 Vectores Críticos -->
-          <!-- Vector 1 -->
-          <div class="bento-card threat-card">
-            <div class="threat-header">
-              <span class="threat-badge red">Vector 01 // Red</span>
-              <span class="risk-pill high">Crítico</span>
-            </div>
-            <h3 class="card-title" style="font-size: 14px;">Eavesdropping & MitM</h3>
-            <p class="card-desc">Conexiones TCP en texto claro o con suites TLS obsoletas permiten interceptar consultas y contraseñas.</p>
-            <div class="mitigation-box">
-              <span class="mitigation-label">Mitigación:</span>
-              <span>TLS 1.3 forzado + Ciphers AEAD ECDHE</span>
-            </div>
-          </div>
-
-          <!-- Vector 2 -->
-          <div class="bento-card threat-card">
-            <div class="threat-header">
-              <span class="threat-badge amber">Vector 02 // Permisos</span>
-              <span class="risk-pill high">Alto</span>
-            </div>
-            <h3 class="card-title" style="font-size: 14px;">Esquema Public Laxo</h3>
-            <p class="card-desc">Privilegio CREATE predeterminado a todo usuario permite inyección de objetos y escalada de privilegios.</p>
-            <div class="mitigation-box">
-              <span class="mitigation-label">Mitigación:</span>
-              <span>REVOKE CREATE ON SCHEMA public</span>
-            </div>
-          </div>
-
-          <!-- Vector 3 -->
-          <div class="bento-card threat-card">
-            <div class="threat-header">
-              <span class="threat-badge red">Vector 03 // Identidad</span>
-              <span class="risk-pill high">Crítico</span>
-            </div>
-            <h3 class="card-title" style="font-size: 14px;">Superusuario en TCP</h3>
-            <p class="card-desc">Cuenta postgres accesible por red TCP expuesta a ataques masivos de fuerza bruta y descifrado de hash.</p>
-            <div class="mitigation-box">
-              <span class="mitigation-label">Mitigación:</span>
-              <span>Exclusivo Unix socket local peer</span>
-            </div>
-          </div>
-
-          <!-- Vector 4 -->
-          <div class="bento-card threat-card">
-            <div class="threat-header">
-              <span class="threat-badge blue">Vector 04 // Trazabilidad</span>
-              <span class="risk-pill med">Medio</span>
-            </div>
-            <h3 class="card-title" style="font-size: 14px;">Ceguera Forense</h3>
-            <p class="card-desc">Ausencia de trazas sobre sentencias DDL y manipulación de roles impide la auditoría de incidentes.</p>
-            <div class="mitigation-box">
-              <span class="mitigation-label">Mitigación:</span>
-              <span>pgaudit activo + SIEM WORM 365d</span>
-            </div>
-          </div>
-
-          <!-- FILA 2: Reducción Cuantitativa y Kill Chain -->
-          <!-- Tarjeta 5 (Span 2 cols): Matriz CVSS Cuantitativa -->
-          <div class="bento-card col-span-2">
-            <div class="card-top-icon">
-              <span class="card-title text-cyan">Matriz de Reducción Cuantitativa de Riesgo (CVSS v3.1)</span>
-              <span class="badge-pill green">-92.4% Severidad</span>
-            </div>
-            <div class="cvss-matrix">
-              <div class="cvss-row header">
-                <span>Vector de Amenaza</span>
-                <span>Pre-Hardening</span>
-                <span>Post-Hardening</span>
-                <span>Efecto</span>
-              </div>
-              <div class="cvss-row">
-                <span class="cvss-vector-name">Sniffing / MitM en Red</span>
-                <span class="cvss-badge-old">8.8 Alto</span>
-                <span class="cvss-badge-new">0.0 Nulo</span>
-                <span class="cvss-status">✓ Cifrado Forzado</span>
-              </div>
-              <div class="cvss-row">
-                <span class="cvss-vector-name">Escalada en Schema Public</span>
-                <span class="cvss-badge-old">9.1 Crítico</span>
-                <span class="cvss-badge-new">1.2 Residual</span>
-                <span class="cvss-status">✓ Privilegio Revocado</span>
-              </div>
-              <div class="cvss-row">
-                <span class="cvss-vector-name">Fuerza Bruta Root en TCP</span>
-                <span class="cvss-badge-old">9.8 Crítico</span>
-                <span class="cvss-badge-new">0.0 Nulo</span>
-                <span class="cvss-status">✓ Socket Local Exclusivo</span>
-              </div>
-              <div class="cvss-row">
-                <span class="cvss-vector-name">Evasión de Trazas / Logs</span>
-                <span class="cvss-badge-old">7.5 Alto</span>
-                <span class="cvss-badge-new">0.8 Mínimo</span>
-                <span class="cvss-status">✓ Trazabilidad pgaudit</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tarjeta 6 (Span 2 cols): Kill Chain Neutralizada -->
-          <div class="bento-card col-span-2 highlight-card">
-            <div class="card-top-icon">
-              <span class="card-title text-white">Cadena de Ataque Neutralizada (Kill-Chain Response)</span>
-              <span class="badge-pill blue">Bloqueo Proactivo</span>
-            </div>
-            <div class="kill-chain-flow">
-              <div class="kc-step">
-                <div class="kc-header">
-                  <span class="kc-num">Fase 1</span>
-                  <span class="kc-shield">🛡️</span>
-                </div>
-                <span class="kc-attack">Escaneo de Red</span>
-                <span class="kc-defense">Bloqueado por CIDR restringido y SYN cookies</span>
-              </div>
-              <div class="kc-step">
-                <div class="kc-header">
-                  <span class="kc-num">Fase 2</span>
-                  <span class="kc-shield">🛡️</span>
-                </div>
-                <span class="kc-attack">Intercepción Tráfico</span>
-                <span class="kc-defense">Inutilizado por TLS 1.3 y claves efímeras PFS</span>
-              </div>
-              <div class="kc-step">
-                <div class="kc-header">
-                  <span class="kc-num">Fase 3</span>
-                  <span class="kc-shield">🛡️</span>
-                </div>
-                <span class="kc-attack">Cracking de Hashes</span>
-                <span class="kc-defense">Imposibilitado por SCRAM-SHA-256 (4096 iteraciones)</span>
-              </div>
-              <div class="kc-step">
-                <div class="kc-header">
-                  <span class="kc-num">Fase 4</span>
-                  <span class="kc-shield">🛡️</span>
-                </div>
-                <span class="kc-attack">Escalada de Privilegios</span>
-                <span class="kc-defense">Contenido por Sandbox Systemd y Revoke Public</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================================================================
-         SLIDE 3: FASE I - HARDENING DE KERNEL Y SISTEMA OPERATIVO
-    ==================================================================== -->
-    <section class="slide" id="slide-3" data-index="3" data-theme="kernel-sandbox">
-      <div class="slide-inner">
-        <div class="slide-header">
-          <div class="pill-tag">
-            <span class="tag-glow"></span>
-            FASE 1 // AISLAMIENTO DE INFRAESTRUCTURA & KERNEL
-          </div>
-          <h2 class="slide-title">Hardening del Kernel Linux y Sandboxing Systemd</h2>
-          <p class="slide-subtitle">Fortificación del subsistema operativo para prevenir ataques de denegación de servicio y desbordamiento de memoria</p>
-        </div>
-
-        <div class="bento-grid grid-3-cols">
-          <!-- Columna Izquierda: Código sysctl -->
-          <div class="bento-card col-span-2 code-card">
-            <div class="code-header">
-              <div class="code-title-wrap">
-                <span class="code-dot red"></span><span class="code-dot amber"></span><span class="code-dot green"></span>
-                <span class="code-filename">/etc/sysctl.d/99-postgresql-security.conf</span>
-              </div>
-              <button class="btn-copy" data-target="code-sysctl">Copiar Config</button>
-            </div>
-            <pre class="code-block" id="code-sysctl"><code><span class="c-comment"># 1. Mitigación de ataques de Denegación de Servicio TCP SYN Flood</span>
-<span class="c-prop">net.ipv4.tcp_syncookies</span> = <span class="c-val">1</span>
-
-<span class="c-comment"># 2. Deshabilitar redirección ICMP y evitar alteración de enrutamiento</span>
-<span class="c-prop">net.ipv4.conf.all.accept_redirects</span> = <span class="c-val">0</span>
-<span class="c-prop">net.ipv4.conf.default.accept_redirects</span> = <span class="c-val">0</span>
-<span class="c-prop">net.ipv4.conf.all.send_redirects</span> = <span class="c-val">0</span>
-<span class="c-prop">net.ipv4.ip_forward</span> = <span class="c-val">0</span>
-
-<span class="c-comment"># 3. Mitigación estricta de IP Spoofing (Reverse Path Filtering)</span>
-<span class="c-prop">net.ipv4.conf.all.rp_filter</span> = <span class="c-val">1</span>
-
-<span class="c-comment"># 4. ASLR al nivel máximo (2) contra ataques de corrupción de memoria</span>
-<span class="c-prop">kernel.randomize_va_space</span> = <span class="c-val">2</span>
-
-<span class="c-comment"># 5. Restringir swappiness para evitar volcado de memoria a disco</span>
-<span class="c-prop">vm.swappiness</span> = <span class="c-val">1</span></code></pre>
-          </div>
-
-          <!-- Columna Derecha: Tarjetas de Permisos y Systemd -->
-          <div class="bento-stacked">
-            <div class="bento-card">
-              <h3 class="card-title text-cyan">Permisos en $PGDATA (CIS 2.1)</h3>
-              <p class="card-desc">Máscara octal estricta para impedir lectura por usuarios del sistema no autorizados.</p>
-              <div class="terminal-mini">
-                <code>chmod 0700 /var/lib/postgresql/data</code>
-                <code>chmod 0600 /etc/postgresql/*.conf</code>
-                <code>chown -R postgres:postgres /var/lib/postgresql</code>
-              </div>
-            </div>
-
-            <div class="bento-card highlight-card">
-              <h3 class="card-title text-blue">Sandboxing Nativo en Systemd</h3>
-              <ul class="check-list">
-                <li><code>ProtectSystem=strict</code> (Archivos en Read-Only)</li>
-                <li><code>NoNewPrivileges=true</code> (Bloqueo de binarios SUID)</li>
-                <li><code>PrivateTmp=true</code> (Espacio /tmp aislado)</li>
-                <li><code>ProtectHome=true</code> (Sin acceso a home de usuarios)</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================================================================
-         SLIDE 4: FASE II - CRIPTOGRAFÍA EN TRÁNSITO (TLS 1.3)
-    ==================================================================== -->
-    <section class="slide" id="slide-4" data-index="4" data-theme="cipher-stream">
-      <div class="slide-inner">
-        <div class="slide-header">
-          <div class="pill-tag">
-            <span class="tag-glow"></span>
-            FASE 2 // CRIPTOGRAFÍA PERIMETRAL
-          </div>
-          <h2 class="slide-title">Cifrado en Tránsito con TLS 1.3 Mandatorio</h2>
-          <p class="slide-subtitle">Erradicación absoluta del texto plano y protección contra ataques de degradación mediante suites criptográficas de última generación</p>
-        </div>
-
-        <div class="bento-grid grid-3-cols">
-          <!-- Columna 1: Directivas postgresql.conf -->
-          <div class="bento-card code-card col-span-2">
-            <div class="code-header">
-              <div class="code-title-wrap">
-                <span class="code-dot red"></span><span class="code-dot amber"></span><span class="code-dot green"></span>
-                <span class="code-filename">/etc/postgresql/16/main/postgresql.conf (Sección SSL)</span>
-              </div>
-              <button class="btn-copy" data-target="code-ssl">Copiar Directivas</button>
-            </div>
-            <pre class="code-block" id="code-ssl"><code><span class="c-comment"># Habilitación forzosa de SSL</span>
-<span class="c-prop">ssl</span> = <span class="c-val">on</span>
-<span class="c-prop">ssl_cert_file</span> = <span class="c-val">'/etc/postgresql/16/main/certs/server.crt'</span>
-<span class="c-prop">ssl_key_file</span>  = <span class="c-val">'/etc/postgresql/16/main/certs/server.key'</span>
-
-<span class="c-comment"># CIS Benchmark 4.1: Forzar versión mínima TLS 1.3</span>
-<span class="c-prop">ssl_min_protocol_version</span> = <span class="c-val">'TLSv1.3'</span>
-
-<span class="c-comment"># Ciphers de alta seguridad (Cifrado autenticado AEAD con GCM)</span>
-<span class="c-prop">ssl_ciphers</span> = <span class="c-val">'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'</span>
-<span class="c-prop">ssl_prefer_server_ciphers</span> = <span class="c-val">on</span>
-<span class="c-prop">ssl_ecdh_curve</span> = <span class="c-val">'prime256v1'</span></code></pre>
-          </div>
-
-          <!-- Columna 2: Beneficios y Certificados -->
-          <div class="bento-stacked">
-            <div class="bento-card highlight-card">
-              <h3 class="card-title text-cyan">Propiedades Criptográficas</h3>
-              <ul class="bullet-list">
-                <li><strong>Perfect Forward Secrecy (PFS):</strong> Claves efímeras por sesión garantizan que la captura de tráfico histórico no pueda ser descifrada.</li>
-                <li><strong>Certificados X.509:</strong> Claves RSA de 4096 bits o Ed25519 con permisos <code>0600</code>.</li>
-                <li><strong>Protección MitM:</strong> Verificación de integridad mutua.</li>
-              </ul>
-            </div>
-
-            <div class="bento-card">
-              <h3 class="card-title text-white">Cumplimiento Normativo</h3>
-              <div class="metric-compact">
-                <span class="badge-pill green">PCI-DSS v4.0 Requisito 3</span>
-                <span class="badge-pill blue">NIST SP 800-52 Rev 2</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================================================================
-         SLIDE 5: FASE III - AUTENTICACIÓN SCRAM-SHA-256 & CORTAFUEGOS
-    ==================================================================== -->
-    <section class="slide" id="slide-5" data-index="5" data-theme="firewall-barrier">
-      <div class="slide-inner">
-        <div class="slide-header">
-          <div class="pill-tag">
-            <span class="tag-glow"></span>
-            FASE 3 // AUTENTICACIÓN & CORTAFUEGOS DE APLICACIÓN
-          </div>
-          <h2 class="slide-title">Autenticación SCRAM-SHA-256 y Cortafuegos pg_hba.conf</h2>
-          <p class="slide-subtitle">Sustitución de mecanismos obsoletos y política de Cero Confianza (Zero Trust) con denegación por defecto</p>
-        </div>
-
-        <div class="bento-grid grid-3-cols">
-          <!-- Tarjeta 1: Comparativa de Hashes -->
           <div class="bento-card">
-            <h3 class="card-title text-cyan">SCRAM-SHA-256 vs Métodos Heredados</h3>
-            <div class="comparison-list">
-              <div class="comp-item red">
-                <span class="comp-icon">✕</span>
-                <div class="comp-text">
-                  <strong>trust / password</strong>
-                  <small>Acceso sin clave o en texto plano sin hash.</small>
-                </div>
-              </div>
-              <div class="comp-item amber">
-                <span class="comp-icon">⚠</span>
-                <div class="comp-text">
-                  <strong>md5 (Deprecado)</strong>
-                  <small>Vulnerable a colisiones y tablas rainbow.</small>
-                </div>
-              </div>
-              <div class="comp-item green highlight-border">
-                <span class="comp-icon">✓</span>
-                <div class="comp-text">
-                  <strong>scram-sha-256 (Mandatorio)</strong>
-                  <small>Salt aleatorio de 32 bytes, 4096 iteraciones. El servidor jamás almacena la clave en claro.</small>
-                </div>
-              </div>
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+              <span class="badge-pill amber">Metodología</span>
             </div>
-          </div>
-
-          <!-- Tarjeta 2: Configuración pg_hba.conf -->
-          <div class="bento-card code-card col-span-2">
-            <div class="code-header">
-              <div class="code-title-wrap">
-                <span class="code-dot red"></span><span class="code-dot amber"></span><span class="code-dot green"></span>
-                <span class="code-filename">/etc/postgresql/16/main/pg_hba.conf (Reglas Zero Trust)</span>
-              </div>
-              <button class="btn-copy" data-target="code-hba">Copiar Reglas</button>
+            <h3 class="card-title">Honestidad Académica</h3>
+            <p class="card-desc">El trabajo se enfoca en controles reales de laboratorio demostrables en vivo.</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Se descartaron certificaciones y puntuaciones ficticias no respaldadas por auditoría formal.</li>
+              <li>Cada medida cuenta con una prueba terminal específica en la Sección 5.</li>
+            </ul>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>$ sudo systemctl is-active postgresql<br>$ psql --version<br># Comprobaciones reales en vivo</code>
             </div>
-            <pre class="code-block" id="code-hba"><code><span class="c-comment"># TYPE  DATABASE        USER            ADDRESS                 METHOD</span>
-
-<span class="c-comment"># 1. Superusuario postgres: EXCLUSIVO local mediante UNIX socket peer</span>
-<span class="c-kw">local</span>   all             postgres                                <span class="c-val">peer</span>
-
-<span class="c-comment"># 2. Conexiones locales de herramientas de sistema con SCRAM</span>
-<span class="c-kw">local</span>   all             all                                     <span class="c-val">scram-sha-256</span>
-
-<span class="c-comment"># 3. Aplicaciones de negocio: TLS Mandatorio (hostssl) y Subred Restringida</span>
-<span class="c-kw">hostssl</span> app_production  app_backend     10.0.50.0/24            <span class="c-val">scram-sha-256</span>
-<span class="c-kw">hostssl</span> app_production  sec_auditor     10.0.99.10/32           <span class="c-val">scram-sha-256</span>
-
-<span class="c-comment"># 4. RECHAZO POR DEFECTO (Cero conexiones no declaradas)</span>
-<span class="c-kw">host</span>    all             all             0.0.0.0/0               <span class="c-val">reject</span>
-<span class="c-kw">host</span>    all             all             ::/0                    <span class="c-val">reject</span></code></pre>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ===================================================================
-         SLIDE 6: FASE IV - CONTROL DE ACCESO RBAC Y SANEAMIENTO
+         SLIDE 3: INTRODUCCIÓN AL HARDENING
     ==================================================================== -->
-    <section class="slide" id="slide-6" data-index="6" data-theme="vault-rbac">
+    <section class="slide" id="slide-3" data-index="3" data-theme="threat-radar">
       <div class="slide-inner">
         <div class="slide-header">
           <div class="pill-tag">
             <span class="tag-glow"></span>
-            FASE 4 // CONTROL DE ACCESO LÓGICO & PRIVILEGIOS
+            SECCIÓN 1 // INTRODUCCIÓN AL HARDENING
           </div>
-          <h2 class="slide-title">Matriz de Roles RBAC y Saneamiento del Esquema Public</h2>
-          <p class="slide-subtitle">Aplicación estricta del Principio de Menor Privilegio y aislamiento de dominios transaccionales</p>
+          <h2 class="slide-title">Concepto de Hardening y Elección Tecnológica</h2>
+          <p class="slide-subtitle">Por qué fortificar la base de datos y criterios de selección de PostgreSQL 16 y Ubuntu Server</p>
         </div>
 
         <div class="bento-grid grid-3-cols">
-          <!-- Bento 1: Saneamiento Public -->
           <div class="bento-card highlight-card">
             <div class="card-top-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span class="badge-pill blue">INCIBE 2023</span>
             </div>
-            <h3 class="card-title text-cyan">Saneamiento Inmediato (CIS 5.1)</h3>
-            <p class="card-desc">Eliminación de la brecha histórica del esquema público:</p>
-            <div class="sql-box">
-              <code>REVOKE CREATE ON SCHEMA public FROM PUBLIC;</code>
-              <code>REVOKE ALL ON DATABASE app_prod FROM PUBLIC;</code>
-              <code>REVOKE EXECUTE ON FUNCTION pg_read_file(text) FROM PUBLIC;</code>
+            <h3 class="card-title">Definición de Hardening (Bastionado)</h3>
+            <p class="card-desc">Un SGBD almacena activos críticos para cualquier entidad. Dejar su configuración por defecto genera riesgos innecesarios.</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li><strong>INCIBE (2023):</strong> "El bastionado permite identificar configuraciones seguras y aplicar medidas adicionales para mejorar la protección de un sistema".</li>
+              <li>Consiste en revisar parámetros y deshabilitar opciones superfluas.</li>
+            </ul>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>Objetivo: Fortificar el servicio sin crear complejidades inmanejables.</code>
             </div>
           </div>
 
-          <!-- Bento 2: Script SQL de Roles -->
-          <div class="bento-card code-card col-span-2">
-            <div class="code-header">
-              <div class="code-title-wrap">
-                <span class="code-dot red"></span><span class="code-dot amber"></span><span class="code-dot green"></span>
-                <span class="code-filename">rbac_security_model.sql</span>
-              </div>
-              <button class="btn-copy" data-target="code-rbac">Copiar SQL</button>
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
             </div>
-            <pre class="code-block" id="code-rbac"><code><span class="c-comment">-- 1. Roles grupales sin acceso de login directo (NOLOGIN)</span>
-<span class="c-kw">CREATE ROLE</span> role_readonly <span class="c-kw">WITH NOLOGIN</span>;
-<span class="c-kw">CREATE ROLE</span> role_readwrite <span class="c-kw">WITH NOLOGIN</span>;
-<span class="c-kw">CREATE ROLE</span> role_auditor <span class="c-kw">WITH NOLOGIN</span>;
-
-<span class="c-comment">-- 2. Concesión de privilegios mínimos en el esquema de aplicación</span>
-<span class="c-kw">GRANT USAGE ON SCHEMA</span> app_data <span class="c-kw">TO</span> role_readwrite;
-<span class="c-kw">GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA</span> app_data <span class="c-kw">TO</span> role_readwrite;
-
-<span class="c-comment">-- 3. Rol de sólo lectura para reportes y Business Intelligence</span>
-<span class="c-kw">GRANT USAGE ON SCHEMA</span> app_data <span class="c-kw">TO</span> role_readonly;
-<span class="c-kw">GRANT SELECT ON ALL TABLES IN SCHEMA</span> app_data <span class="c-kw">TO</span> role_readonly;
-
-<span class="c-comment">-- 4. Rol auditor: acceso exclusivo a métricas y configuraciones del motor</span>
-<span class="c-kw">GRANT</span> pg_read_all_settings, pg_read_all_stats <span class="c-kw">TO</span> role_auditor;</code></pre>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================================================================
-         SLIDE 7: FASE V - AUDITORÍA FORENSE PGAUDIT Y LOGS
-    ==================================================================== -->
-    <section class="slide" id="slide-7" data-index="7" data-theme="forensic-telemetry">
-      <div class="slide-inner">
-        <div class="slide-header">
-          <div class="pill-tag">
-            <span class="tag-glow"></span>
-            FASE 5 // TRAZABILIDAD & MONITOREO CONTINUO
-          </div>
-          <h2 class="slide-title">Auditoría Forense con pgaudit y Logging Inmutable</h2>
-          <p class="slide-subtitle">Captura estructurada de eventos DDL, modificaciones de roles y centralización segura hacia plataforma SIEM</p>
-        </div>
-
-        <div class="bento-grid grid-3-cols">
-          <!-- Columna 1: Directivas de Auditoría -->
-          <div class="bento-card code-card col-span-2">
-            <div class="code-header">
-              <div class="code-title-wrap">
-                <span class="code-dot red"></span><span class="code-dot amber"></span><span class="code-dot green"></span>
-                <span class="code-filename">pgaudit & postgresql.conf (Trazabilidad Forense)</span>
-              </div>
-              <button class="btn-copy" data-target="code-audit">Copiar Config</button>
-            </div>
-            <pre class="code-block" id="code-audit"><code><span class="c-comment"># Precarga de extensión de auditoría certificada</span>
-<span class="c-prop">shared_preload_libraries</span> = <span class="c-val">'pgaudit'</span>
-
-<span class="c-comment"># Clases de eventos auditados: DDL, Roles, Escrituras críticas y Misceláneos</span>
-<span class="c-prop">pgaudit.log</span> = <span class="c-val">'ddl, role, write, misc'</span>
-<span class="c-prop">pgaudit.log_catalog</span> = <span class="c-val">off</span>
-<span class="c-prop">pgaudit.log_parameter</span> = <span class="c-val">on</span>   <span class="c-comment"># Captura parámetros de sentencias preparadas</span>
-
-<span class="c-comment"># Parámetros del subsistema de logs del motor</span>
-<span class="c-prop">logging_collector</span> = <span class="c-val">on</span>
-<span class="c-prop">log_directory</span> = <span class="c-val">'/var/log/postgresql'</span>
-<span class="c-prop">log_file_mode</span> = <span class="c-val">0600</span>         <span class="c-comment"># Permisos exclusivos del usuario de base de datos</span>
-<span class="c-prop">log_rotation_age</span> = <span class="c-val">1d</span>
-<span class="c-prop">log_rotation_size</span> = <span class="c-val">100MB</span>
-<span class="c-prop">log_connections</span> = <span class="c-val">on</span>
-<span class="c-prop">log_disconnections</span> = <span class="c-val">on</span>
-<span class="c-prop">log_min_duration_statement</span> = <span class="c-val">250</span>  <span class="c-comment"># Alerta en queries lentas > 250ms</span></code></pre>
+            <h3 class="card-title">Por qué PostgreSQL 16</h3>
+            <p class="card-desc">Seleccionado por su madurez, transparencia en configuraciones y capacidades avanzadas de administración:</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Gestión clara de usuarios, roles y privilegios sin superusuario obligatorio.</li>
+              <li>Filtro fino de clientes por IP y método en <code>pg_hba.conf</code>.</li>
+              <li>Soporte nativo para <code>SCRAM-SHA-256</code> y cifrado TLS.</li>
+              <li>Registro nativo de eventos de conexión sin agentes externos.</li>
+            </ul>
           </div>
 
-          <!-- Columna 2: SIEM & Cadena de Custodia -->
-          <div class="bento-stacked">
-            <div class="bento-card highlight-card">
-              <h3 class="card-title text-cyan">Integración SIEM (Wazuh / Elastic)</h3>
-              <p class="card-desc">Sincronización de trazas en tiempo real mediante túnel TLS protegido con retención inmutable de 365 días.</p>
-              <div class="tag-cloud">
-                <span class="chip">PCI-DSS Req 10</span>
-                <span class="chip">WORM Storage</span>
-                <span class="chip">Cadena de Custodia</span>
-              </div>
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
             </div>
-
-            <div class="bento-card">
-              <h3 class="card-title text-white">Prefijo Estructurado de Logs</h3>
-              <code class="mono-badge">%m [%p] %q%u@%d app=%a</code>
-              <p class="card-desc-small">Registra fecha milisegundos, PID del backend, usuario, base de datos y nombre de la aplicación cliente.</p>
+            <h3 class="card-title">Por qué Ubuntu Server 24.04 LTS</h3>
+            <p class="card-desc">Plataforma Linux de nivel empresarial ampliamente documentada y con soporte extendido:</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Seguridad por capas recomendada por Canonical (2026).</li>
+              <li>Aislamiento de permisos a nivel de sistema de archivos (<code>0700</code>).</li>
+              <li>Herramientas criptográficas estándar preinstaladas (<code>openssl</code>).</li>
+            </ul>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>Stack: Ubuntu Server 24.04 LTS + PostgreSQL 16</code>
             </div>
           </div>
         </div>
@@ -732,100 +303,649 @@
     </section>
 
     <!-- ===================================================================
-         SLIDE 8: RESULTADOS, MATRIZ CIS Y CONCLUSIONES
+         SLIDE 4: OBJETIVO Y ENTORNO DE LA PRÁCTICA
     ==================================================================== -->
-    <section class="slide" id="slide-8" data-index="8" data-theme="executive-triumph">
+    <section class="slide" id="slide-4" data-index="4" data-theme="lab-matrix">
       <div class="slide-inner">
         <div class="slide-header">
           <div class="pill-tag">
             <span class="tag-glow"></span>
-            EVALUACIÓN CUANTITATIVA // BALANCE FINAL
+            SECCIÓN 2 // OBJETIVO Y ENTORNO DE LA PRÁCTICA
           </div>
-          <h2 class="slide-title">Resultados de Auditoría CIS Benchmark y Conclusiones</h2>
-          <p class="slide-subtitle">Comparativa del estado inicial frente a la postura fortificada final y recomendaciones DevSecOps</p>
+          <h2 class="slide-title">Parámetros y Topología del Laboratorio Académico</h2>
+          <p class="slide-subtitle">Definición formal de los componentes de hardware, red, software y objetivos de seguridad</p>
         </div>
 
         <div class="bento-grid grid-3-cols">
-          <!-- Columna 1 y 2: Tabla Comparativa CIS -->
-          <div class="bento-card col-span-2">
-            <h3 class="card-title text-cyan">Matriz de Cumplimiento de Controles CIS v1.3.0</h3>
+          <!-- Columna 1 y 2 (Span 2 cols): Tabla Oficial de Entorno -->
+          <div class="bento-card col-span-2 highlight-card">
+            <h3 class="card-title text-cyan">Tabla de Parámetros del Entorno (Sección 2 del PDF)</h3>
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th>Dominio de Seguridad CIS</th>
-                    <th>Estado Vanilla Pre-Hardening</th>
-                    <th>Estado Post-Hardening</th>
-                    <th>Resultado</th>
+                    <th>Elemento</th>
+                    <th>Configuración en la Práctica</th>
+                    <th>Propósito / Función</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>CIS 1.x</strong> Aprovisionamiento Seguro</td>
-                    <td>Repositorios genéricos sin fijar</td>
-                    <td>Repositorio PGDG firmado GPG</td>
-                    <td><span class="status-pill success">100% OK</span></td>
+                    <td><strong>SGBD</strong></td>
+                    <td>PostgreSQL 16</td>
+                    <td>Motor de base de datos relacional objeto de hardening.</td>
                   </tr>
                   <tr>
-                    <td><strong>CIS 2.x</strong> SO, Permisos y Sandboxing</td>
-                    <td>Permisos 0755 en datos, sin sandbox</td>
-                    <td>Permisos 0700 + Systemd Isolated</td>
-                    <td><span class="status-pill success">100% OK</span></td>
+                    <td><strong>Sistema Operativo</strong></td>
+                    <td>Ubuntu Server 24.04 LTS</td>
+                    <td>Servidor base con soporte extendido y aislamiento multiusuario.</td>
                   </tr>
                   <tr>
-                    <td><strong>CIS 3.x</strong> Autenticación y Red</td>
-                    <td>MD5 permitido, escucha 0.0.0.0/0</td>
-                    <td>SCRAM-SHA-256 + CIDR segmentado</td>
-                    <td><span class="status-pill success">100% OK</span></td>
+                    <td><strong>Tipo de Práctica</strong></td>
+                    <td>Entorno académico / laboratorio</td>
+                    <td>Ámbito de pruebas controladas para defensa técnica.</td>
                   </tr>
                   <tr>
-                    <td><strong>CIS 4.x</strong> Criptografía en Tránsito</td>
-                    <td>Texto claro permitido sin SSL</td>
-                    <td>TLS 1.3 forzado + Ciphers ECDHE</td>
-                    <td><span class="status-pill success">100% OK</span></td>
+                    <td><strong>Objetivo de Seguridad</strong></td>
+                    <td>Reducir accesos innecesarios</td>
+                    <td>Aplicar controles básicos comprensibles y verificables.</td>
                   </tr>
                   <tr>
-                    <td><strong>CIS 5.x</strong> Gestión de Roles y Objetos</td>
-                    <td>Esquema PUBLIC con CREATE</td>
-                    <td>Revocado, matriz RBAC mínima</td>
-                    <td><span class="status-pill success">100% OK</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>CIS 6.x</strong> Auditoría y Trazabilidad</td>
-                    <td>Sin auditoría DDL ni rotación 0600</td>
-                    <td>pgaudit activo + SIEM WORM</td>
-                    <td><span class="status-pill success">98% OK</span></td>
+                    <td><strong>Principales Medidas</strong></td>
+                    <td>Actualizaciones, auth, roles, TLS, logs, respaldo</td>
+                    <td>Los 6 ejes defensivos implementados paso a paso.</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- Columna 3: KPIs y Conclusiones -->
-          <div class="bento-stacked">
-            <div class="bento-card highlight-card">
-              <h3 class="card-title text-cyan">Score de Cumplimiento</h3>
-              <div class="score-comparison">
-                <div class="score-box before">
-                  <span class="score-num">34.2%</span>
-                  <span class="score-lbl">Antes (Vanilla)</span>
-                </div>
-                <div class="score-arrow">➔</div>
-                <div class="score-box after">
-                  <span class="score-num text-emerald">98.4%</span>
-                  <span class="score-lbl">Post-Hardening</span>
-                </div>
-              </div>
+          <!-- Columna 3: Parámetros de Red y BD -->
+          <div class="bento-card">
+            <h3 class="card-title text-white">Parámetros del Laboratorio</h3>
+            <ul class="bullet-list-compact" style="margin-top: 8px;">
+              <li><strong>Base de Datos:</strong> <code>app_practica</code></li>
+              <li><strong>Usuario de Aplicación:</strong> <code>app_user</code></li>
+              <li><strong>Subred Autorizada:</strong> <code>192.168.1.0/24</code></li>
+              <li><strong>Algoritmo Hash:</strong> <code>scram-sha-256</code></li>
+              <li><strong>Seguridad en Red:</strong> <code>hostssl</code> forzado</li>
+            </ul>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>DB Name:   app_practica<br>Subnet:    192.168.1.0/24<br>App User:  app_user<br>Auth:      hostssl scram-sha-256</code>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <div class="bento-card">
-              <h3 class="card-title text-white">Recomendaciones DevSecOps</h3>
-              <ul class="bullet-list-compact">
-                <li>Integrar escaneo <code>pgtoolkit</code> en CI/CD.</li>
-                <li>Automatizar rotación de certificados TLS (90 días).</li>
-                <li>Simulacro semestral de restauración inmutable.</li>
-              </ul>
+    <!-- ===================================================================
+         SLIDE 5: INSTALACIÓN DE POSTGRESQL
+    ==================================================================== -->
+    <section class="slide" id="slide-5" data-index="5" data-theme="provisioning">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            SECCIÓN 3 // INSTALACIÓN DE POSTGRESQL
+          </div>
+          <h2 class="slide-title">Instalación y Despliegue de PostgreSQL 16</h2>
+          <p class="slide-subtitle">Aprovisionamiento inicial de paquetes en Ubuntu Server, comprobación de servicios y primer acceso</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <div class="bento-card highlight-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span class="badge-pill blue">Paso 1</span>
             </div>
+            <h3 class="card-title">Instalación de Paquetes</h3>
+            <p class="card-desc">Actualización previa de repositorios e instalación del motor central y herramientas contribuidas:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>$ sudo apt update<br>$ sudo apt upgrade -y<br>$ sudo apt install postgresql postgresql-contrib -y</code>
+            </div>
+          </div>
+
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+              <span class="badge-pill green">Paso 2</span>
+            </div>
+            <h3 class="card-title">Comprobación del Servicio</h3>
+            <p class="card-desc">Verificación en Systemd para constatar que el demonio se encuentre activo y comprobar la versión instalada:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>$ sudo systemctl status postgresql<br>$ psql --version<br># Salida esperada: psql (PostgreSQL) 16.x</code>
+            </div>
+          </div>
+
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span class="badge-pill amber">Paso 3</span>
+            </div>
+            <h3 class="card-title">Primer Acceso Administrativo</h3>
+            <p class="card-desc">Conexión local desde el propio servidor utilizando el usuario administrativo del sistema operativo:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>$ sudo -u postgres psql<br>postgres=# \conninfo<br># Conectado como usuario local postgres</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 6: MEDIDA 1 - SISTEMA ACTUALIZADO
+    ==================================================================== -->
+    <section class="slide" id="slide-6" data-index="6" data-theme="patch-shield">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            MEDIDA DE HARDENING 4.1 // CANONICAL 2026
+          </div>
+          <h2 class="slide-title">Medida 1: Mantener el Sistema Actualizado</h2>
+          <p class="slide-subtitle">Mitigación de vulnerabilidades conocidas y aplicación del modelo de seguridad por capas</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <div class="bento-card highlight-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span class="badge-pill blue">Fundamento</span>
+            </div>
+            <h3 class="card-title">Seguridad por Capas (Canonical 2026)</h3>
+            <p class="card-desc">Ubuntu recomienda complementar la instalación con una estrategia defensiva en capas:</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Actualizaciones periódicas de parches y kernel.</li>
+              <li>Administración estricta de cuentas de usuario del SO.</li>
+              <li>Protección y filtrado perimetral de red.</li>
+            </ul>
+          </div>
+
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+              <span class="badge-pill green">Ejecución</span>
+            </div>
+            <h3 class="card-title">Procedimiento en Consola</h3>
+            <p class="card-desc">Sincronización de repositorios oficiales y aplicación de correcciones disponibles:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>$ sudo apt update<br>$ sudo apt upgrade -y</code>
+            </div>
+          </div>
+
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <h3 class="card-title">Impacto en la Seguridad</h3>
+            <p class="card-desc">Las actualizaciones corrigen fallos de programación conocidos y reducen la probabilidad de explotación de vulnerabilidades públicas que ya cuentan con parches.</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Parchea librerías criptográficas compartidas (OpenSSL).</li>
+              <li>Mejora la estabilidad y rendimiento del gestor.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 7: MEDIDA 2 - RESTRINGIR CONEXIONES
+    ==================================================================== -->
+    <section class="slide" id="slide-7" data-index="7" data-theme="firewall-gate">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            MEDIDA DE HARDENING 4.2 // POSTGRESQL GLOBAL DEVELOPMENT GROUP 2026a
+          </div>
+          <h2 class="slide-title">Medida 2: Restringir las Conexiones Permitidas</h2>
+          <p class="slide-subtitle">Control de acceso de clientes en pg_hba.conf, segmentación por subred y política de rechazo</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              <span class="badge-pill blue">pg_hba.conf</span>
+            </div>
+            <h3 class="card-title">Mecanismo de Evaluación</h3>
+            <p class="card-desc">Controla la autenticación de clientes evaluando en orden secuencial:</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Tipo de conexión (<code>local</code> vs <code>hostssl</code>).</li>
+              <li>Base de datos de destino y usuario solicitante.</li>
+              <li>Dirección IP de origen y método de autenticación.</li>
+              <li>Se mantiene acceso local <code>peer</code> para <code>postgres</code>.</li>
+            </ul>
+          </div>
+
+          <div class="bento-card col-span-2 highlight-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span class="badge-pill green">Reglas Oficiales</span>
+            </div>
+            <h3 class="card-title">Reglas Aplicadas en pg_hba.conf</h3>
+            <p class="card-desc">Se define acceso remoto exclusivo para <code>app_user</code> en <code>app_practica</code> desde <code>192.168.1.0/24</code> mediante TLS, rechazando todo lo demás:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code># Archivo: /etc/postgresql/16/main/pg_hba.conf<br>local    all          postgres                                peer<br>hostssl  app_practica app_user  192.168.1.0/24  scram-sha-256<br>host     all          all       0.0.0.0/0       reject<br>host     all          all       ::/0            reject</code>
+            </div>
+            <p class="card-desc-small" style="margin-top: 8px;"><em>Nota:</em> Se utiliza coherentemente <code>app_user</code> para evitar inconsistencias con los roles de la base de datos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 8: MEDIDA 3 - AUTENTICACIÓN SEGURA
+    ==================================================================== -->
+    <section class="slide" id="slide-8" data-index="8" data-theme="crypto-vault">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            MEDIDA DE HARDENING 4.3 // ALMACENAMIENTO DE CREDENCIALES
+          </div>
+          <h2 class="slide-title">Medida 3: Usar Autenticación Segura (SCRAM-SHA-256)</h2>
+          <p class="slide-subtitle">Esquema criptográfico moderno para contraseñas y creación del usuario de aplicación</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span class="badge-pill blue">Estándar</span>
+            </div>
+            <h3 class="card-title">Por qué SCRAM-SHA-256</h3>
+            <p class="card-desc">Mecanismo moderno de desafío-respuesta (Salted Challenge Response Authentication Mechanism):</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Evita almacenar contraseñas en esquemas antiguos como MD5 o texto claro.</li>
+              <li>Protege frente a ataques de fuerza bruta y diccionarios offline.</li>
+              <li>Recomendación oficial de PostgreSQL Global Development Group.</li>
+            </ul>
+          </div>
+
+          <div class="bento-card highlight-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span class="badge-pill green">postgresql.conf</span>
+            </div>
+            <h3 class="card-title">Configuración del Gestor</h3>
+            <p class="card-desc">Se fuerza el cifrado estricto de contraseñas para todos los nuevos roles:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code># En /etc/postgresql/16/main/postgresql.conf<br>password_encryption = 'scram-sha-256'</code>
+            </div>
+          </div>
+
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+            </div>
+            <h3 class="card-title">Creación de Base y Usuario</h3>
+            <p class="card-desc">Sentencias SQL ejecutadas en la consola administrativa:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>CREATE DATABASE app_practica;<br>CREATE USER app_user WITH PASSWORD 'ClaveDeEjemplo_2026!';</code>
+            </div>
+            <p class="card-desc-small" style="margin-top: 6px;"><em>Aviso:</em> Las contraseñas del informe son ejemplos didácticos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 9: MEDIDA 4 - MÍNIMO PRIVILEGIO Y ROLES
+    ==================================================================== -->
+    <section class="slide" id="slide-9" data-index="9" data-theme="rbac-matrix">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            MEDIDA DE HARDENING 4.4 // POSTGRESQL GLOBAL DEVELOPMENT GROUP 2026b
+          </div>
+          <h2 class="slide-title">Medida 4: Aplicar el Principio de Mínimo Privilegio</h2>
+          <p class="slide-subtitle">Separación de roles para lectura y escritura, evitando privilegios administrativos en la aplicación</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              <span class="badge-pill blue">Mínimo Privilegio</span>
+            </div>
+            <h3 class="card-title">Segregación Funcional</h3>
+            <p class="card-desc">Un usuario de aplicación no debe tener permisos de superusuario:</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Cada usuario recibe únicamente los permisos estrictamente necesarios.</li>
+              <li>Se definen roles abstractos con propiedad <code>NOLOGIN</code>.</li>
+              <li>Aislamiento entre operaciones de consulta y manipulación de datos.</li>
+            </ul>
+          </div>
+
+          <div class="bento-card col-span-2 highlight-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span class="badge-pill green">Sentencias SQL</span>
+            </div>
+            <h3 class="card-title">Creación y Concesión de Roles</h3>
+            <p class="card-desc">Configuración de <code>rol_lectura</code> y <code>rol_escritura</code>, y vinculación al usuario <code>app_user</code>:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>CREATE ROLE rol_lectura NOLOGIN;<br>CREATE ROLE rol_escritura NOLOGIN;<br><br>GRANT CONNECT ON DATABASE app_practica TO rol_lectura, rol_escritura;<br>GRANT USAGE ON SCHEMA public TO rol_lectura, rol_escritura;<br>GRANT SELECT ON ALL TABLES IN SCHEMA public TO rol_lectura;<br>GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO rol_escritura;<br><br>GRANT rol_escritura TO app_user;</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 10: MEDIDA 4 (CONT) - SANEAMIENTO ESQUEMA PUBLIC
+    ==================================================================== -->
+    <section class="slide" id="slide-10" data-index="10" data-theme="logic-shield">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            MEDIDA DE HARDENING 4.4 (CONT.) // CONTROL DE ESQUEMAS
+          </div>
+          <h2 class="slide-title">Medida 4 (Cont.): Saneamiento del Esquema Public</h2>
+          <p class="slide-subtitle">Revocación del privilegio de creación a PUBLIC para impedir la creación indiscriminada de objetos</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <div class="bento-card highlight-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              <span class="badge-pill red">Vulnerabilidad</span>
+            </div>
+            <h3 class="card-title">El Riesgo del Esquema Public</h3>
+            <p class="card-desc">En instalaciones por defecto de PostgreSQL, cualquier usuario con acceso puede crear tablas y objetos en el esquema <code>public</code>.</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Riesgo de colisión de nombres y consumo no controlado de espacio.</li>
+              <li>Un usuario comprometido podría crear funciones u objetos maliciosos.</li>
+            </ul>
+          </div>
+
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span class="badge-pill green">Sentencia SQL</span>
+            </div>
+            <h3 class="card-title">Revocación del Privilegio CREATE</h3>
+            <p class="card-desc">Se elimina el privilegio de creación para el pseudo-rol global <code>PUBLIC</code>:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>-- En la base de datos app_practica:<br>REVOKE CREATE ON SCHEMA public FROM PUBLIC;</code>
+            </div>
+          </div>
+
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+            </div>
+            <h3 class="card-title">Beneficio Obtenido</h3>
+            <p class="card-desc">Solo administradores autorizados pueden alterar el esquema de datos.</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>El usuario <code>app_user</code> queda restringido exclusivamente a consultar y manipular datos.</li>
+              <li>Se mantiene la integridad y orden estructural de la base de datos.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 11: MEDIDAS 5 Y 6 - ARCHIVOS Y TLS
+    ==================================================================== -->
+    <section class="slide" id="slide-11" data-index="11" data-theme="cipher-stream">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            MEDIDAS DE HARDENING 4.5 Y 4.6 // PERMISOS FÍSICOS Y CIFRADO
+          </div>
+          <h2 class="slide-title">Medidas 5 y 6: Protección de Archivos y Cifrado TLS</h2>
+          <p class="slide-subtitle">Permisos restrictivos en el sistema de archivos (0700/0600) y certificados SSL/TLS para red</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <!-- Medida 4.5 -->
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              <span class="badge-pill blue">Medida 4.5</span>
+            </div>
+            <h3 class="card-title">Protección de Archivos de Datos</h3>
+            <p class="card-desc">Los archivos físicos contienen la información sensible. Se asegura propiedad exclusiva y permisos restrictivos:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>$ sudo chown -R postgres:postgres /var/lib/postgresql/16/main<br>$ sudo chmod 0700 /var/lib/postgresql/16/main</code>
+            </div>
+            <p class="card-desc-small" style="margin-top: 6px;">Impide que otros usuarios del SO puedan leer los ficheros de datos.</p>
+          </div>
+
+          <!-- Medida 4.6 (Span 2 cols) -->
+          <div class="bento-card col-span-2 highlight-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span class="badge-pill green">Medida 4.6</span>
+            </div>
+            <h3 class="card-title">Habilitar Conexiones Cifradas con TLS</h3>
+            <p class="card-desc">Cifra el tráfico entre cliente y servidor. Generación de certificado autofirmado X.509 para laboratorio y configuración en PostgreSQL:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>$ sudo openssl req -new -x509 -nodes -days 365 -newkey rsa:2048 \<br>    -keyout /etc/postgresql/16/main/server.key \<br>    -out /etc/postgresql/16/main/server.crt<br>$ sudo chown postgres:postgres /etc/postgresql/16/main/server.*<br>$ sudo chmod 0600 /etc/postgresql/16/main/server.key<br><br># En postgresql.conf:<br>ssl = on<br>ssl_cert_file = '/etc/postgresql/16/main/server.crt'<br>ssl_key_file = '/etc/postgresql/16/main/server.key'</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 12: MEDIDAS 7 Y 8 - REGISTROS Y RESPALDOS
+    ==================================================================== -->
+    <section class="slide" id="slide-12" data-index="12" data-theme="resilience-lock">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            MEDIDAS DE HARDENING 4.7 Y 4.8 // REGISTROS Y RESPALDOS
+          </div>
+          <h2 class="slide-title">Medidas 7 y 8: Registros de Actividad y Copia de Seguridad</h2>
+          <p class="slide-subtitle">Monitoreo nativo de conexiones/desconexiones y respaldo lógico periódico con pg_dump</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <div class="bento-card highlight-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              <span class="badge-pill blue">Medida 4.7</span>
+            </div>
+            <h3 class="card-title">Registros Básicos de Actividad</h3>
+            <p class="card-desc">Habilita el colector de logs nativo para registrar conexiones y desconexiones sin agentes adicionales:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code># En /etc/postgresql/16/main/postgresql.conf<br>logging_collector = on<br>log_connections = on<br>log_disconnections = on<br>log_line_prefix = '%m [%p] %u@%d '</code>
+            </div>
+          </div>
+
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+              <span class="badge-pill green">Medida 4.8</span>
+            </div>
+            <h3 class="card-title">Copia de Seguridad (pg_dump)</h3>
+            <p class="card-desc">El hardening no evita todos los incidentes. Se genera un respaldo lógico en formato personalizado:</p>
+            <div class="code-terminal" style="margin-top: auto;">
+              <code>$ pg_dump -U postgres -F c \<br>    -d app_practica \<br>    -f app_practica.backup</code>
+            </div>
+          </div>
+
+          <div class="bento-card">
+            <div class="card-top-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            </div>
+            <h3 class="card-title">Almacenamiento del Respaldo</h3>
+            <p class="card-desc">Directivas clave de resiliencia según el informe:</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Guardar fuera del directorio principal de PostgreSQL.</li>
+              <li>De ser posible, trasladar a otro equipo o soporte de almacenamiento externo.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 13: VERIFICACIÓN EXPERIMENTAL
+    ==================================================================== -->
+    <section class="slide" id="slide-13" data-index="13" data-theme="audit-scan">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            SECCIÓN 5 // VERIFICACIÓN DE LA CONFIGURACIÓN
+          </div>
+          <h2 class="slide-title">Verificación Experimental de la Configuración</h2>
+          <p class="slide-subtitle">Reinicio del servicio y comprobaciones ejecutadas para demostración durante la defensa</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <!-- Columna 1 y 2 (Span 2 cols): Tabla Oficial de Pruebas -->
+          <div class="bento-card col-span-2 highlight-card">
+            <h3 class="card-title text-cyan">Matriz de Comprobaciones Ejecutadas (Página 10 del PDF)</h3>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Prueba</th>
+                    <th>Comando o Acción</th>
+                    <th>Resultado Esperado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Servicio activo</strong></td>
+                    <td><code>systemctl is-active postgresql</code></td>
+                    <td><span class="status-pill success">Debe mostrar active</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Versión instalada</strong></td>
+                    <td><code>psql --version</code></td>
+                    <td><span class="status-pill success">Debe mostrar PostgreSQL 16.x</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Roles creados</strong></td>
+                    <td><code>\du dentro de psql</code></td>
+                    <td><span class="status-pill success">app_user, rol_lectura, rol_escritura</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Método contraseña</strong></td>
+                    <td><code>SHOW password_encryption;</code></td>
+                    <td><span class="status-pill success">Debe mostrar scram-sha-256</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Conexión cifrada</strong></td>
+                    <td><code>\conninfo (conexión remota)</code></td>
+                    <td><span class="status-pill success">Indica conexión SSL/TLS</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Restricción acceso</strong></td>
+                    <td>Conexión desde red no autorizada</td>
+                    <td><span class="status-pill success">Conexión rechazada (reject)</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Respaldo</strong></td>
+                    <td>Verificar <code>app_practica.backup</code></td>
+                    <td><span class="status-pill success">Archivo existe y tiene contenido</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Columna 3: Comandos de Reinicio y Verificación -->
+          <div class="bento-card">
+            <h3 class="card-title text-white">Reinicio y Validación</h3>
+            <p class="card-desc">Comandos de reinicio del motor tras aplicar las configuraciones:</p>
+            <div class="code-terminal" style="margin-top: 8px;">
+              <code>$ sudo systemctl restart postgresql<br>$ sudo systemctl is-active postgresql<br># active</code>
+            </div>
+            <p class="card-desc-small" style="margin-top: 10px;"><em>Finalidad:</em> Comprobar que los cambios quedaron activos y pueden ser demostrados en la defensa presencial.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 14: RESULTADOS Y CONCLUSIONES
+    ==================================================================== -->
+    <section class="slide" id="slide-14" data-index="14" data-theme="executive-triumph">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <div class="pill-tag">
+            <span class="tag-glow"></span>
+            SECCIONES 6 Y 7 // RESULTADOS Y CONCLUSIONES
+          </div>
+          <h2 class="slide-title">Resultados de la Práctica y Conclusiones Finales</h2>
+          <p class="slide-subtitle">Comparativa antes y después del hardening y líneas de trabajo futuro propuestas</p>
+        </div>
+
+        <div class="bento-grid grid-3-cols">
+          <!-- Columna 1 y 2 (Span 2 cols): Tabla Comparativa del PDF -->
+          <div class="bento-card col-span-2 highlight-card">
+            <h3 class="card-title text-cyan">Comparativa: Configuración Básica vs Después del Hardening (Pág 11)</h3>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Aspecto</th>
+                    <th>Configuración Básica</th>
+                    <th>Después del Hardening</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Acceso</strong></td>
+                    <td>Reglas generales por defecto</td>
+                    <td><span class="status-pill success">Acceso limitado por usuario y red</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Contraseñas</strong></td>
+                    <td>Configuración estándar</td>
+                    <td><span class="status-pill success">Uso de SCRAM-SHA-256</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Permisos</strong></td>
+                    <td>Riesgo de otorgar permisos amplios</td>
+                    <td><span class="status-pill success">Roles con permisos separados</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Comunicación</strong></td>
+                    <td>Puede existir conexión sin cifrado</td>
+                    <td><span class="status-pill success">Regla hostssl para conexión cifrada</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Registros</strong></td>
+                    <td>Información limitada para seguimiento</td>
+                    <td><span class="status-pill success">Registro de conexiones y desconexiones</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Respaldo</strong></td>
+                    <td>Sin copia definida en la práctica</td>
+                    <td><span class="status-pill success">Copia lógica mediante pg_dump</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Columna 3: Conclusiones y Trabajo Futuro -->
+          <div class="bento-card">
+            <h3 class="card-title text-white">Conclusiones y Trabajo Futuro</h3>
+            <p class="card-desc">El hardening no consiste en una sola configuración, sino en combinar medidas sencillas de forma conjunta.</p>
+            <ul class="bullet-list-compact" style="margin-top: 6px;">
+              <li>Es preferible implementar controles comprensibles y verificables en lugar de configuraciones complejas no probadas.</li>
+              <li><strong>Trabajo Futuro Propuesto:</strong>
+                <ul style="padding-left: 14px; margin-top: 4px;">
+                  <li>Configurar cortafuegos del host (UFW).</li>
+                  <li>Herramientas avanzadas de auditoría.</li>
+                  <li>Política formal de respaldos automatizados.</li>
+                </ul>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -863,7 +983,7 @@
     <div class="drawer-header">
       <div class="drawer-title-wrap">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-        <h3>Índice de Diapositivas</h3>
+        <h3>Índice de Diapositivas (14)</h3>
       </div>
       <button class="btn-close-drawer" id="btnCloseDrawer" title="Cerrar [Esc]">✕</button>
     </div>
